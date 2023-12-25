@@ -1,35 +1,99 @@
 import {StyleSheet} from "react-native";
 
-const global = StyleSheet.create({
+const styles = StyleSheet.create({
     home: {
         width: "100%",
         height: "100%",
         flex: 1,
-        position: 'relative'
+        backgroundColor: "#F7F9FD",
     },
-    getUser: {
-        width: 100,
-        height: 50,
-        position: 'absolute',
-        bottom:'10%',
-        right:20,
-        zIndex:999,
-        borderRadius:15,
-        padding:0,
-        margin:0
+    header: {
+        height: 45,
+        paddingLeft: 30,
+        paddingRight: 30,
+        // backgroundColor: 'red',
     },
-    fileUpdate: {
+    headerSearch: {
+        width: '78%',
+        height: '70%',
+        backgroundColor: '#F2F2F2',
+        borderRadius: 20,
+    },
+    headerTxt: {
+        color:'rgba(157,157,157,0.35)',
+        fontSize: 16,
+        marginLeft: 5,
+    },
+    outWrapper: {
+        width: "100%",
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    wrapper: {
+        width: "100%",
+        height: 180,
+        color: "#fff",
+    },
+    wrapperImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 15,
+    },
+    zt: {
+        width: '100%',
+        height:30,
+        paddingLeft: 10,
+        paddingRight: 10
+    },
+    ztTxt: {
+        fontSize:19,
+        color:'black'
+    },
+    ztButton:{
         width: 80,
-        height: 80,
-        padding:0,
-        margin:0,
-        borderColor:"#9a9a9a",
-        borderRadius:5
+        height: '100%',
+        borderRadius: 15,
     },
-    fileUpdate_txt:{
-        color:"#9a9a9a",
-        fontSize:60
+    ranking:{
+        width: '100%',
+        backgroundColor:'#ffffff',
+        padding:15,
+        borderRadius:10,
+        paddingBottom:10,
+        marginBottom:10,
+        elevation: 5, // Android 阴影属性
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    rBox:{
+        width: '100%',
+        marginTop:13
+    },
+    rBoxImage:{
+        width: 52,
+        height:52,
+        borderRadius:10
+    },
+    rPlaylists:{
+        width: '73%',
+        flexDirection: 'row', // 默认为 'column'
+        justifyContent: 'space-between',
+        alignItems:'center'
+    },
+    rPlaylistsTxt1:{
+        color:'red',
+        fontSize:16
+    },
+    rPlaylistsTxtTitle:{
+        color:'black',
+        fontSize:18
+    },
+    rPlaylistsTxtAuthor:{
+        color:'#9a9a9a',
+        fontSize:14
     }
 })
 
-export default global
+export default styles

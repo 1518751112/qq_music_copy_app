@@ -17,7 +17,7 @@ function StatusBarDiy(props:{
           height:StatusBar.currentHeight,
           width:'100%',
           display:props.translucent?'none':'flex',
-          backgroundColor:props.backgroundColor||'transparent',
+          backgroundColor:props.backgroundColor||'white',
       }}>
 
       </View>

@@ -26,9 +26,9 @@ function HomeStack() {
           tabBarActiveTintColor: "#00b286",
           tabBarInactiveTintColor: 'gray',
           tabBarStyle:{
-            height:70,
-            paddingTop: 10,
-            paddingBottom: 20,
+            height:60,
+            paddingTop: 5,
+            paddingBottom: 10,
           }
         })}
       >
