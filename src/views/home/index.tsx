@@ -1,11 +1,13 @@
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./styles";
 import StatusBarDiy from "componests/statusBarDiy";
 import {Button, Carousel, Flex, WhiteSpace} from "@ant-design/react-native";
 import Ionicons from "react-native-vector-icons/Feather";
 import KingKong, {KingKongData} from "componests/kingKong";
 import CarouselNew from "react-native-snap-carousel-new";
+import {effect} from "utils/dva16";
+import {EGet, NHome} from "common/constant";
 
 const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/gxb/%E8%92%99%E7%89%88%E7%BB%84%2028.png",
@@ -15,7 +17,7 @@ const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/PA3/%E8%92%99%E7%89%88%E7%BB%84%2051.png",
 ]
 //推荐歌单
-const songList = [
+const oldSongList = [
     {
         title:'乘风破浪会有时，唱歌是一种怎么的情感',
         source:require('assets/home/u183.png')
@@ -39,12 +41,34 @@ const songList = [
 ]
 
 export default ({navigation}: any) => {
-    useEffect(() => {
-        /*if(!timeCode){
-          timeCode = setInterval(getLoading,5000)
-        }*/
+    const [songList,setSongList] = useState(oldSongList)
 
+    useEffect(() => {
+        //获取首页信息
+        setTimeout(init,1000)
     }, []);
+
+    const init = async ()=>{
+        const result = await effect(NHome,EGet)
+        if(result.code==200&&result.data){
+            const {blocks} = result.data
+            //获取推荐歌单
+            const song = blocks.find((v:any)=>v.blockCode==='HOMEPAGE_BLOCK_PLAYLIST_RCMD')
+            console.log(song.creatives)
+            //循环出歌曲id与歌曲名称
+            const songList = song.creatives.map((v:any)=>{
+                return {
+                    id:v.resources[0].resourceId,
+                    title:v.resources[0].uiElement.mainTitle.title,
+                    source:{uri:v.resources[0].uiElement.image.imageUrl+'?param=150y150'},
+                    playCount:v.resources[0].resourceExtInfo.playCount,
+                    labelTexts:v.resources[0].uiElement.labelTexts,
+                }
+            })
+            setSongList(songList)
+            // console.log("songList",songList)
+        }
+    }
     const kingKongData = (size:number):KingKongData[]=>{
         const data = [
             {
@@ -148,11 +172,9 @@ export default ({navigation}: any) => {
                 </Flex>
                 <WhiteSpace size="lg" />
                 <CarouselNew
-                    layout={"default"}
                     data={banners}
                     sliderWidth={400}
                     itemWidth={330}
-                    activeSlideAlignment={'center'}
                     renderItem={ ({item, index}) => {
                         return (
                             <View style={styles.ranking} key={index}>
@@ -180,10 +202,7 @@ export default ({navigation}: any) => {
                                 })}
                             </View>
                         )
-                    }}
-                    onSnapToItem = { (index:number)=>{
-                        console.log("滑动")
-                    } } />
+                    }} />
                 <WhiteSpace size="lg" />
 
             </ScrollView>
@@ -191,3 +210,4 @@ export default ({navigation}: any) => {
         </View>
     )
 }
+

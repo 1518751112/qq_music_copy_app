@@ -7,6 +7,7 @@ export const NavName= {
 
 //out
 export const NDemo = 'NDemo'
+export const NHome = 'NHome'
 
 
 
