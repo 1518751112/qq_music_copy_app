@@ -4,10 +4,12 @@ import styles from "./styles";
 import StatusBarDiy from "componests/statusBarDiy";
 import {Button, Carousel, Flex, WhiteSpace} from "@ant-design/react-native";
 import Ionicons from "react-native-vector-icons/Feather";
+import IonicFont5 from "react-native-vector-icons/FontAwesome5";
 import KingKong, {KingKongData} from "componests/kingKong";
 import CarouselNew from "react-native-snap-carousel-new";
 import {effect} from "utils/dva16";
 import {EGet, NHome} from "common/constant";
+import {numAddLabel} from "utils/util";
 
 const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/gxb/%E8%92%99%E7%89%88%E7%BB%84%2028.png",
@@ -39,7 +41,7 @@ const oldSongList = [
         source:require('assets/home/u183.png')
     },
 ]
-
+const recommendSize = 110
 export default ({navigation}: any) => {
     const [songList,setSongList] = useState(oldSongList)
 
@@ -54,15 +56,26 @@ export default ({navigation}: any) => {
             const {blocks} = result.data
             //获取推荐歌单
             const song = blocks.find((v:any)=>v.blockCode==='HOMEPAGE_BLOCK_PLAYLIST_RCMD')
-            console.log(song.creatives)
+            // console.log(song.creatives)
             //循环出歌曲id与歌曲名称
             const songList = song.creatives.map((v:any)=>{
+                const image = v.resources[0].uiElement.image.imageUrl+'?param=150y150';
+                const playCount = v.resources[0].resourceExtInfo.playCount;
                 return {
-                    id:v.resources[0].resourceId,
-                    title:v.resources[0].uiElement.mainTitle.title,
-                    source:{uri:v.resources[0].uiElement.image.imageUrl+'?param=150y150'},
-                    playCount:v.resources[0].resourceExtInfo.playCount,
-                    labelTexts:v.resources[0].uiElement.labelTexts,
+                    id:v.resources[0].resourceId,//歌单id
+                    title:v.resources[0].uiElement.mainTitle.title,//歌单标题
+                    image,//歌单图片
+                    playCount,//播放次数
+                    labelTexts:v.resources[0].uiElement.labelTexts,//标签
+                    diyLogo:(<View style={{borderRadius:10,width:recommendSize,height:recommendSize,position:'relative',overflow:'hidden'}}>
+                        <View style={styles.ttBack}></View>
+                        <Image source={{uri:image}} style={{width:'100%',height:'100%'}} />
+                        <View style={styles.ttTop}>
+                            <IonicFont5 name='play' size={6} color={'#ffffff'}/>
+                            <Text style={{fontSize:18,color:'#ffffff'}}>{numAddLabel(playCount)}</Text>
+                        </View>
+                        <IonicFont5 name='play' size={20} color={'#ffffff'} style={styles.ttBottom}/>
+                    </View>)
                 }
             })
             setSongList(songList)
@@ -164,7 +177,7 @@ export default ({navigation}: any) => {
                     <Text style={styles.ztTxt}>推荐</Text>
                     <Button style={styles.ztButton} size='small'>查看更多</Button>
                 </Flex>
-                <KingKong interval={15} sourceStyle={{borderRadius:10}} size={110} numberOfLines={2} data={songList} />
+                <KingKong interval={15} size={recommendSize} numberOfLines={2} data={songList} />
                 <WhiteSpace size="lg" />
                 <Flex wrap="nowrap" align="center" justify='between' style={styles.zt}>
                     <Text style={styles.ztTxt}>排行榜</Text>

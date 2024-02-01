@@ -53,7 +53,7 @@ react {
 /**
  * Set this to true to Run Proguard on Release builds to minify the Java bytecode.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 /**
  * The preferred build flavor of JavaScriptCore (JSC)
@@ -86,6 +86,16 @@ android {
         versionName "1.0"
         // for react-native-config
         resValue "string", "build_config_package", "com.yun_music"
+        ndk {
+//            abiFilters "armeabi-v7a","arm64-v8a","x86","x86_64"
+            /**
+             * arm64-v8a: 第8代、64位ARM处理器
+             * armeabiv-v7a: 第7代及以上的 ARM 处理器
+             * x86_64: 64位的平板
+             * x86: 平板、模拟器用得比较多
+             */
+            abiFilters "armeabi-v7a", "x86"
+        }
     }
     signingConfigs {
         debug {
