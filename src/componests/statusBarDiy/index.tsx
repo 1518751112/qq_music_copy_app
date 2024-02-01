@@ -7,10 +7,16 @@ function StatusBarDiy(props:{
     barStyle?:BarStyle
     translucent?:boolean
     animated?:boolean
+    navigation?:any
 }) {
-
     useEffect(()=>{
         StatusBar.setBarStyle(props.barStyle||'default',props.animated||false)
+        const unsubscribe = props.navigation?props.navigation.addListener('focus', () => {
+            StatusBar.setBarStyle(props.barStyle||'default',props.animated||false)
+        }):null;
+        return ()=>{
+            unsubscribe&&unsubscribe()
+        }
     },[props])
     return (
       <View style={{

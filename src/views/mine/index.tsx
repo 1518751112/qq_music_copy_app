@@ -5,7 +5,7 @@ export default ({ navigation }: any) => {
 
   return (
     <View>
-        <StatusBarDiy/>
+        <StatusBarDiy navigation={navigation}/>
       <Text>首页</Text>
     </View>
   )

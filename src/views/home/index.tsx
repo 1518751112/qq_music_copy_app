@@ -8,8 +8,9 @@ import IonicFont5 from "react-native-vector-icons/FontAwesome5";
 import KingKong, {KingKongData} from "componests/kingKong";
 import CarouselNew from "react-native-snap-carousel-new";
 import {effect} from "utils/dva16";
-import {EGet, NHome} from "common/constant";
+import {EGet, NavName, NHome} from "common/constant";
 import {numAddLabel} from "utils/util";
+import {NavigationDes} from "common/interface";
 
 const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/gxb/%E8%92%99%E7%89%88%E7%BB%84%2028.png",
@@ -42,7 +43,7 @@ const oldSongList = [
     },
 ]
 const recommendSize = 110
-export default ({navigation}: any) => {
+export default ({navigation}: NavigationDes) => {
     const [songList,setSongList] = useState(oldSongList)
 
     useEffect(() => {
@@ -67,6 +68,7 @@ export default ({navigation}: any) => {
                     image,//歌单图片
                     playCount,//播放次数
                     labelTexts:v.resources[0].uiElement.labelTexts,//标签
+                    onPress:(data:any)=>{navigation.navigate(NavName.SongSheet, {...data,diyLogo:null,onPress:null})},//点击事件
                     diyLogo:(<View style={{borderRadius:10,width:recommendSize,height:recommendSize,position:'relative',overflow:'hidden'}}>
                         <View style={styles.ttBack}></View>
                         <Image source={{uri:image}} style={{width:'100%',height:'100%'}} />
@@ -139,7 +141,7 @@ export default ({navigation}: any) => {
 
     return (
         <View style={styles.home}>
-            <StatusBarDiy barStyle='dark-content'/>
+            <StatusBarDiy barStyle='dark-content' navigation={navigation}/>
 
             <Flex wrap="nowrap" align="center" justify='between' style={styles.header}>
                 <Ionicons name='mic' size={20} color={'#9d9d9d'}/>

@@ -1,7 +1,8 @@
 import React, {useEffect, useRef} from "react";
-import {AppState, PermissionsAndroid, StatusBar} from "react-native";
+import {AppState, PermissionsAndroid} from "react-native";
 import LoginScreen from 'views/login';
 import TabBar from 'componests/tabBar';
+import SongSheet from 'views/songSheet';
 import {createNavigationContainerRef, NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {NavName, NDemo} from "common/constant";
@@ -83,7 +84,6 @@ const App = () => {
 
   return (
     <Provider>
-      <StatusBar barStyle='dark-content' />
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator initialRouteName={"测试"} screenOptions={{
           headerStyle: {
@@ -99,6 +99,7 @@ const App = () => {
         }}>
           <Stack.Screen name={NavName.Tab} component={TabBar} options={{ headerShown: false }} />
           <Stack.Screen name={NavName.Login} component={LoginScreen} options={{ headerShown: false }} />
+          <Stack.Screen name={NavName.SongSheet} component={SongSheet} options={{ headerShown: false }} />
 
           </Stack.Navigator>
       </NavigationContainer>

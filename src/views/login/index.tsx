@@ -1,6 +1,7 @@
 import {Text, View} from "react-native";
+import {NavigationDes} from "common/interface";
 
-export default ({ navigation }: any) => {
+export default ({ navigation }: NavigationDes) => {
 
   return (
     <View>

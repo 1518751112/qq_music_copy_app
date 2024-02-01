@@ -3,6 +3,7 @@ export const NavName= {
   Login: 'Login',
   Mine: 'Mine',
   Tab: 'Tab',
+  SongSheet: 'SongSheet',
 }
 
 //out
