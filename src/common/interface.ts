@@ -1,5 +1,4 @@
 import {NavigationProp} from "@react-navigation/core/lib/typescript/src/types";
-import type {Route} from "@react-navigation/routers";
 
 export interface ViewsConfig {
     component: any,
@@ -10,7 +9,23 @@ export interface ViewsConfig {
     }
 }
 
+export type Navigation = NavigationProp<any>
 export interface NavigationDes {
-    navigation: NavigationProp<any>,
-    route: Route<any>
+    navigation: Navigation,
+    route: {
+        /**
+         * Unique key for the route.
+         */
+        key: string;
+        /**
+         * User-provided name for the route.
+         */
+        name: string;
+        /**
+         * Path associated with the route.
+         * Usually present when the screen was opened from a deep link.
+         */
+        path?: string;
+        params?: any;
+    }
 }

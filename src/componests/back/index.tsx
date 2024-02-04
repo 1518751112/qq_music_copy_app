@@ -1,68 +1,44 @@
 import React, {useEffect} from 'react';
-import {
-    ColorValue,
-    Image,
-    ImageSourcePropType,
-    ScrollView,
-    StyleProp,
-    Text,
-    TouchableOpacity,
-    View,
-    ViewStyle
-} from "react-native";
+import {Image, StyleProp, Text, View, ViewStyle} from "react-native";
 import styles from "./styles";
-
-export interface KingKongData {
-    title: string,
-    source?: ImageSourcePropType,
-    onPress?: (data:KingKongData,index:number) => void
-    diyLogo?:React.JSX.Element
-}
+import {Navigation} from "common/interface";
+import IonicFont6 from "react-native-vector-icons/FontAwesome6";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import StatusBarDiy from "componests/statusBarDiy";
+import {getImgColor} from "utils/util";
 
 //左右滑动组件
-function KingKong(props:{
+function Back(props:{
     style?:StyleProp<ViewStyle>
-    data:KingKongData[]
-    size?:number,
-    fontColor?: ColorValue,
-    interval?:number,
-    numberOfLines?:number,
-    sourceStyle?:ViewStyle
+    navigation:Navigation
+    breakImage:string
 }) {
-    const {data,size,fontColor,interval,numberOfLines,sourceStyle} = props
-    useEffect(() => {
-
-
-    }, []);
+    const {navigation} = props
+    useEffect(()=>{
+        StatusBarDiy.setBarStyle("light-content")
+    },[])
     return (
-      <View style={props.style?props.style:{
-          width: '100%',
-          overflow:'hidden',
-      }}>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.container}>
-              {data.map((temp,index)=>(
-                  <TouchableOpacity onPress={()=>{
-                      temp.onPress&&temp.onPress(temp,index)
-                  }} key={index} style={{
-                      marginRight: interval?interval:5,
-                      alignItems: 'center',
-                  }}>
-                      {temp.source?<Image style={{
-                            ...(sourceStyle||{}),
-                          width: size?size:50,
-                          height: size?size:50,
-                          overflow: 'hidden',
-                      }} source={temp.source}/>:temp.diyLogo}
-                      <Text ellipsizeMode="tail" numberOfLines={numberOfLines||1} style={{
-                          color: fontColor||"black",
-                          maxWidth: size?size:50,
-                      }}>{temp.title}</Text>
-                  </TouchableOpacity>
-              ))}
+      <View style={styles.home}>
+          <View style={styles.box}>
+              <View style={styles.left}>
+                  <IonicFont6 name='arrow-left' size={20} color={'#ffffff'} style={styles.leftButton} onPress={()=>{
+                      navigation.goBack()
+                  }} />
+                  <Text style={styles.title}>歌单</Text>
+              </View>
+              <View style={styles.right}>
+                  <Fontisto name='search' size={18} color={'#ffffff'} style={styles.leftButton} onPress={()=>{
 
-          </ScrollView>
+                  }} />
+                  <Fontisto name='more-v-a' size={18} color={'#ffffff'} onPress={()=>{
+
+                  }} />
+              </View>
+          </View>
+          <Image style={styles.backgroundImage} source={{uri:getImgColor(props.breakImage)}} />
+
       </View>
   );
 }
-export default KingKong
+export default Back
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {AppState, PermissionsAndroid} from "react-native";
+import {AppState, Dimensions, PermissionsAndroid} from "react-native";
 import LoginScreen from 'views/login';
 import TabBar from 'componests/tabBar';
 import SongSheet from 'views/songSheet';
@@ -11,6 +11,7 @@ import {initDva, initRequest, setNetInfo, useStore} from "utils/dva16";
 import {Provider, Toast} from "@ant-design/react-native";
 import NetInfo from '@react-native-community/netinfo';
 import {config} from "configs";
+import {setScreenSize} from "utils/util";
 
 export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
@@ -61,17 +62,23 @@ const App = () => {
   const netStateInfo = useRef(AppState.currentState)
 
   useEffect(() => {
-    console.log("444",name,config);
     requestLocationPermission()
     const stateListener = AppState.addEventListener('change', handleAppStateChange)
     const net = NetInfo.addEventListener(
       handleConnectivityChange
     );
+    updateDimensions();
+    Dimensions.addEventListener('change', updateDimensions);
     return () => {
       stateListener.remove()
       net()
     }
   },[]);
+
+  const updateDimensions = () => {
+    setScreenSize(Dimensions.get('window').width,Dimensions.get('window').height)
+  };
+
   const handleAppStateChange = (nextAppState: any) => {
     //监听app是在后台还是前台
     appState.current = nextAppState

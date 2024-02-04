@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
     home: {
@@ -7,92 +7,35 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#F7F9FD",
     },
-    header: {
-        height: 45,
-        paddingLeft: 30,
-        paddingRight: 30,
-        // backgroundColor: 'red',
-    },
-    headerSearch: {
-        width: '78%',
-        height: '70%',
-        backgroundColor: '#F2F2F2',
-        borderRadius: 20,
-    },
-    headerTxt: {
-        color: 'rgba(157,157,157,0.35)',
-        fontSize: 16,
-        marginLeft: 5,
-    },
-    outWrapper: {
+    topBox:{
         width: "100%",
-        paddingLeft: 10,
-        paddingRight: 10
+        paddingTop:Dimensions.get('window').height*0.126,
+        paddingLeft:17,
+        paddingRight:17,
+        paddingBottom:22,
+        zIndex:4
     },
-    wrapper: {
-        width: "100%",
-        height: 180,
-        color: "#fff",
+    topBoxBackImg:{
+        position:'absolute',
+        top:0,
+        left:0,
+        width:'100%',
+        height:'100%',
+        zIndex:3
     },
-    wrapperImage: {
+    topBoxTop:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+    },
+    topBoxTopLeft:{
+        position: 'relative',
+        overflow:'hidden',
+        borderRadius:10,
+        width:Dimensions.get('window').width*0.3
+    },
+    topBoxTopLeImage:{
         width: '100%',
-        height: '100%',
-        borderRadius: 15,
-    },
-    zt: {
-        width: '100%',
-        height: 30,
-        paddingLeft: 10,
-        paddingRight: 10
-    },
-    ztTxt: {
-        fontSize: 19,
-        color: 'black'
-    },
-    ztButton: {
-        width: 80,
-        height: '100%',
-        borderRadius: 15,
-    },
-    ranking: {
-        width: '100%',
-        backgroundColor: '#ffffff',
-        padding: 15,
-        borderRadius: 10,
-        paddingBottom: 10,
-        marginBottom: 10,
-        elevation: 5, // Android 阴影属性
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-    },
-    rBox: {
-        width: '100%',
-        marginTop: 13
-    },
-    rBoxImage: {
-        width: 52,
-        height: 52,
-        borderRadius: 10
-    },
-    rPlaylists: {
-        width: '73%',
-        flexDirection: 'row', // 默认为 'column'
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    rPlaylistsTxt1: {
-        color: 'red',
-        fontSize: 16
-    },
-    rPlaylistsTxtTitle: {
-        color: 'black',
-        fontSize: 18
-    },
-    rPlaylistsTxtAuthor: {
-        color: '#9a9a9a',
-        fontSize: 14
+        height: Dimensions.get('window').width*0.3,
     },
     ttTop: {
         flexDirection: 'row',
@@ -112,12 +55,20 @@ const styles = StyleSheet.create({
         left: 0,
         zIndex:9
     },
-    ttBottom: {
-        position: 'absolute',
-        right: 8,
-        bottom: 5,
-        zIndex:99
-    }
+    topBoxTopRight:{
+        position: 'relative',
+        overflow:'hidden',
+        borderRadius:10
+    },
+    topBoxTopRightLabel:{
+        position: 'relative',
+        overflow:'hidden',
+        borderRadius:10
+    },
+    topBoxTopRightTitle:{
+        color:'#ffffff',
+        fontSize:18
+    },
 })
 
 export default styles

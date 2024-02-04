@@ -60,7 +60,7 @@ export default ({navigation}: NavigationDes) => {
             // console.log(song.creatives)
             //循环出歌曲id与歌曲名称
             const songList = song.creatives.map((v:any)=>{
-                const image = v.resources[0].uiElement.image.imageUrl+'?param=150y150';
+                const image = v.resources[0].uiElement.image.imageUrl;
                 const playCount = v.resources[0].resourceExtInfo.playCount;
                 return {
                     id:v.resources[0].resourceId,//歌单id
@@ -71,7 +71,7 @@ export default ({navigation}: NavigationDes) => {
                     onPress:(data:any)=>{navigation.navigate(NavName.SongSheet, {...data,diyLogo:null,onPress:null})},//点击事件
                     diyLogo:(<View style={{borderRadius:10,width:recommendSize,height:recommendSize,position:'relative',overflow:'hidden'}}>
                         <View style={styles.ttBack}></View>
-                        <Image source={{uri:image}} style={{width:'100%',height:'100%'}} />
+                        <Image source={{uri:image+'?param=150y150'}} style={{width:'100%',height:'100%'}} />
                         <View style={styles.ttTop}>
                             <IonicFont5 name='play' size={6} color={'#ffffff'}/>
                             <Text style={{fontSize:18,color:'#ffffff'}}>{numAddLabel(playCount)}</Text>

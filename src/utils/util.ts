@@ -1,5 +1,6 @@
 import {NativeModules, Platform, StatusBar} from "react-native";
 
+let screenWidth = 0,screenHeight = 0;
 export const setStatusBarHeight = () => {
   const { OS } = Platform
   const {
@@ -21,4 +22,24 @@ export const numAddLabel = (num:number)=>{
     str = num+''
   }
   return str
+}
+
+//图片取色 返回一个像素图片
+export const getImgColor = (imgUrl:string)=>{
+  const match = imgUrl.match(/^[^\?]+/);
+  if (match) {
+    return match[0]+'?param=1y1'
+  }
+  return imgUrl
+}
+
+//获取屏幕宽高
+export const getScreenSize = ()=>{
+  return {screenWidth,screenHeight}
+}
+
+//设置屏幕宽高
+export const setScreenSize = (width:number,height:number)=>{
+  screenWidth = width;
+  screenHeight = height;
 }
