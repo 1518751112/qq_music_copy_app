@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
     topBox:{
         width: "100%",
-        paddingTop:Dimensions.get('window').height*0.126,
+        paddingTop:Dimensions.get('window').height*0.12,
         paddingLeft:17,
         paddingRight:17,
         paddingBottom:22,
@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
         position: 'relative',
         overflow:'hidden',
         borderRadius:10,
-        width:Dimensions.get('window').width*0.3
+        width:Dimensions.get('window').width*0.26,
     },
     topBoxTopLeImage:{
         width: '100%',
-        height: Dimensions.get('window').width*0.3,
+        height: Dimensions.get('window').width*0.26,
     },
     ttTop: {
         flexDirection: 'row',
@@ -56,19 +56,144 @@ const styles = StyleSheet.create({
         zIndex:9
     },
     topBoxTopRight:{
-        position: 'relative',
-        overflow:'hidden',
-        borderRadius:10
+        marginLeft:10,
+        width:Dimensions.get('window').width*0.59,
+        overflow:'hidden'
     },
     topBoxTopRightLabel:{
-        position: 'relative',
-        overflow:'hidden',
-        borderRadius:10
+        flexDirection:'row'
     },
     topBoxTopRightTitle:{
         color:'#ffffff',
-        fontSize:18
+        fontSize:20
     },
+    creator:{
+        paddingTop:10,
+        paddingBottom:10,
+        flexDirection:'row',
+        alignItems:'center',
+    },
+    creatorAvatar:{
+        width:25,
+        height:25,
+        borderRadius:20,
+    },
+    creatorDesc:{
+        color:'rgba(255,255,255,0.89)',
+        maxWidth:135,
+        marginLeft:10
+    },
+    tag:{
+        backgroundColor:'rgba(255,255,255,0.29)',
+        color:"#ffffff",
+        fontSize:15,
+        paddingTop:3,
+        paddingBottom:3,
+        paddingLeft:5,
+        paddingRight:5,
+        borderRadius:3,
+        marginRight:5
+    },
+    attention:{
+        marginLeft:8,
+        flexDirection:'row',
+        alignItems:'center',
+        padding:5,
+        backgroundColor:'rgba(255,255,255,0.1)',
+        borderRadius:15
+    },
+    desc:{
+        color:'rgba(255,255,255,0.89)',
+        marginTop:10,
+        fontSize:15
+    },
+    topBoxBottom:{
+        width:'100%',
+        marginTop:10,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    topBoxBottomCent:{
+        flexDirection:'row',
+        alignItems:'center',
+        width:'30%',
+        height:39,
+        backgroundColor:'rgba(255,255,255,0.29)',
+        borderRadius:30,
+        justifyContent:'center'
+    },
+    topBoxBottomCentText:{
+        color:'white',
+        marginLeft:4,
+        fontSize:16,
+        fontFamily:'JetBrainsMono-Bold'
+    },
+    bottomBoxTop:{
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20,
+        width:'100%',
+        backgroundColor:'rgba(255,255,255,0.89)',
+        padding:15,
+        paddingLeft:17,
+        paddingRight:17,
+    },
+    listPlay:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    listPlayLeft:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    listPlayLeftText:{
+        marginLeft:8,
+        color:'black',
+        fontSize:18,
+    },
+    listPlayLeftNum:{
+        marginLeft:5,
+        color:'#727272',
+        fontSize:13,
+    },
+    listPlayRight:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+    },
+    songList:{
+        width:'100%',
+        height:Dimensions.get('window').height-95,
+        paddingTop:10,
+        paddingLeft:17,
+        paddingRight:17,
+        backgroundColor:'rgba(255,255,255,0.9)'
+    },
+    songListBox:{
+        width:'100%',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        marginTop:10
+    },
+    songListBoxLeft:{
+        flexDirection:'row',
+        alignItems:'center'
+    },
+    songListBoxLeftNum:{
+        color:'#727272',
+        fontSize:16,
+    },
+    songListBoxLeftText:{
+        marginLeft:10,
+        color:'black',
+        fontSize:16,
+    },
+    songListBoxRight:{
+        flexDirection:'row',
+        alignItems:'center'
+    }
 })
 
 export default styles

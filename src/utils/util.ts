@@ -32,6 +32,13 @@ export const getImgColor = (imgUrl:string)=>{
   }
   return imgUrl
 }
+export const getImg = (imgUrl:string,size:string|number)=>{
+  const match = imgUrl.match(/^[^\?]+/);
+  if (match) {
+    return match[0]+`?param=${size}y${size}`
+  }
+  return imgUrl
+}
 
 //获取屏幕宽高
 export const getScreenSize = ()=>{

@@ -108,7 +108,7 @@ const App = () => {
           <Stack.Screen name={NavName.Login} component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name={NavName.SongSheet} component={SongSheet} options={{ headerShown: false }} />
 
-          </Stack.Navigator>
+        </Stack.Navigator>
       </NavigationContainer>
     </Provider>
   );

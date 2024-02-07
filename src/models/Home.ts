@@ -1,4 +1,4 @@
-import {EGet, NHome, RSetState} from "common/constant";
+import {EGet, ESongSheet, NHome, RSetState} from "common/constant";
 import {requestGet} from 'utils/dva16'
 
 export default {
@@ -17,6 +17,10 @@ export default {
   effects: {
     async [EGet](payload: any, { call, reducer, select, effect }: any) {
       const res = await requestGet('homepage/block/page', payload)
+      return res
+    },
+    async [ESongSheet](payload: {id:string,s?:number}, { call, reducer, select, effect }: any) {
+      const res = await requestGet('playlist/detail', payload)
       return res
     },
   },
