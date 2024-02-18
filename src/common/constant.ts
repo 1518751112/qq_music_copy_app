@@ -9,6 +9,7 @@ export const NavName= {
 //out
 export const NDemo = 'NDemo'
 export const NHome = 'NHome'
+export const NMusic = 'NMusic'
 
 
 
@@ -16,3 +17,5 @@ export const NHome = 'NHome'
 export const RSetState = 'RSetState'
 export const EGet = 'EGet'
 export const ESongSheet = 'ESongSheet'
+export const ESongDetail = 'ESongDetail'
+export const ESongInfo = 'ESongInfo'

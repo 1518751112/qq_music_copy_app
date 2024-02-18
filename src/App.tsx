@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {AppState, Dimensions, PermissionsAndroid} from "react-native";
+import {AppState, Dimensions} from "react-native";
 import LoginScreen from 'views/login';
 import TabBar from 'componests/tabBar';
 import SongSheet from 'views/songSheet';
@@ -12,6 +12,7 @@ import {Provider, Toast} from "@ant-design/react-native";
 import NetInfo from '@react-native-community/netinfo';
 import {config} from "configs";
 import {setScreenSize} from "utils/util";
+import TrackPlayer, {AppKilledPlaybackBehavior, Capability} from 'react-native-track-player';
 
 export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
@@ -31,21 +32,7 @@ initRequest(config.serverHome, (status: any, data: any) => {
 
 async function requestLocationPermission() {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      {
-        title: '请求定位权限',
-        message: '应用需要访问您的位置信息',
-        buttonNeutral: '稍后再说',
-        buttonNegative: '拒绝',
-        buttonPositive: '允许',
-      }
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('定位权限已授予');
-    } else {
-      console.log('定位权限被拒绝');
-    }
+
   } catch (error) {
     console.error(error);
   }
@@ -62,18 +49,38 @@ const App = () => {
   const netStateInfo = useRef(AppState.currentState)
 
   useEffect(() => {
-    requestLocationPermission()
     const stateListener = AppState.addEventListener('change', handleAppStateChange)
     const net = NetInfo.addEventListener(
-      handleConnectivityChange
+        handleConnectivityChange
     );
-    updateDimensions();
-    Dimensions.addEventListener('change', updateDimensions);
+    init()
     return () => {
       stateListener.remove()
       net()
     }
   },[]);
+
+  const init = async () => {
+    await requestLocationPermission()
+
+    updateDimensions();
+    Dimensions.addEventListener('change', updateDimensions);
+    await TrackPlayer.setupPlayer();
+    await TrackPlayer.updateOptions({
+      android: {
+        // This is the default behavior
+        appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback
+      },
+      capabilities: [
+        Capability.Play,
+        Capability.Pause,
+        Capability.SkipToNext,
+        Capability.SkipToPrevious,
+        Capability.Stop,
+      ],
+      compactCapabilities: [Capability.Play, Capability.Pause],
+    });
+  }
 
   const updateDimensions = () => {
     setScreenSize(Dimensions.get('window').width,Dimensions.get('window').height)

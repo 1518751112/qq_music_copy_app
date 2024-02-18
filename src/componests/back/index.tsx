@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, StyleProp, Text, View, ViewStyle} from "react-native";
 import styles from "./styles";
 import {Navigation} from "common/interface";
@@ -11,14 +11,18 @@ import {getImgColor} from "utils/util";
 function Back(props:{
     style?:StyleProp<ViewStyle>
     navigation:Navigation
-    openness?:number,
+    config?:(setOpacity:(num:number)=>void)=>void,
     breakImage:string,
     onRef?:(ref:any)=>void
 }) {
-    const {navigation,openness} = props
+    const {navigation,config} = props
     const ref = useRef(null)
+    const [opacity,setOpacity] = useState(0)
     useEffect(()=>{
         StatusBarDiy.setBarStyle("light-content")
+        config&&config((num)=>{
+            setOpacity(num)
+        })
     },[])
 
     useEffect(()=>{
@@ -42,7 +46,7 @@ function Back(props:{
                   }} />
               </View>
           </View>
-          <Image style={{...styles.backgroundImage,opacity:typeof openness=='number'?openness:1}} source={{uri:getImgColor(props.breakImage)}} />
+          <Image style={{...styles.backgroundImage,opacity}} source={{uri:getImgColor(props.breakImage)}} />
 
       </View>
   );

@@ -22,6 +22,6 @@ export default {
     async [ESongSheet](payload: {id:string,s?:number}, { call, reducer, select, effect }: any) {
       const res = await requestGet('playlist/detail', payload)
       return res
-    },
+    }
   },
 }

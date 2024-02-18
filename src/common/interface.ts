@@ -29,3 +29,13 @@ export interface NavigationDes {
         params?: any;
     }
 }
+export class Pagination {
+    page: number=1;
+    size: number=10;
+    totalPages: number=0;
+    loading:boolean = false
+
+    constructor(size?:number) {
+        this.size = size || 10
+    }
+}

@@ -133,15 +133,15 @@ const styles = StyleSheet.create({
         borderTopLeftRadius:20,
         borderTopRightRadius:20,
         width:'100%',
-        backgroundColor:'rgba(255,255,255,0.89)',
-        padding:15,
-        paddingLeft:17,
-        paddingRight:17,
+        backgroundColor:'rgb(255,255,255)',
+        paddingVertical:15,
+        paddingHorizontal:17,
     },
     listPlay:{
         flexDirection:'row',
         justifyContent:'space-between',
-        alignItems:'center'
+        alignItems:'center',
+        zIndex:4,
     },
     listPlayLeft:{
         flexDirection:'row',
@@ -164,11 +164,12 @@ const styles = StyleSheet.create({
     },
     songList:{
         width:'100%',
-        height:Dimensions.get('window').height-95,
+        // height:Dimensions.get('window').height-95,
         paddingTop:10,
         paddingLeft:17,
         paddingRight:17,
-        backgroundColor:'rgba(255,255,255,0.9)'
+        backgroundColor:'rgb(255,255,255)',
+        zIndex:4,
     },
     songListBox:{
         width:'100%',
@@ -193,7 +194,10 @@ const styles = StyleSheet.create({
     songListBoxRight:{
         flexDirection:'row',
         alignItems:'center'
-    }
+    },
+    songListBoxLeftTextSelect:{
+        color:'#ff0000'
+    },
 })
 
 export default styles
