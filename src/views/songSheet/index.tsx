@@ -12,6 +12,7 @@ import {getImgColor, numAddLabel} from "utils/util";
 import {ESongDetail, ESongSheet, NHome, NMusic} from "common/constant";
 import {effect, useStore} from "utils/dva16";
 import {MusicTools} from "utils/musicTools";
+import Player from "componests/player";
 
 const defaultImage = require('assets/home/defaultImage.jpg')
 
@@ -112,8 +113,9 @@ export default ({navigation,route}:NavigationDes) => {
             <Back navigation={navigation} breakImage={route.params?.image} config={(setOpacity)=>{
                 onSetOpacity = setOpacity
             }} />
+            <Player navigation={navigation} />
             <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true} onScroll={handleScroll} stickyHeaderIndices={[2]}
-                        scrollEventThrottle={10}>
+                        scrollEventThrottle={10} style={{paddingBottom:50}}>
                 <View style={styles.topBox} ref={topRef}>
                     <View style={styles.topBoxTop}>
                         <View style={styles.topBoxTopLeft}>
@@ -178,9 +180,9 @@ export default ({navigation,route}:NavigationDes) => {
                         <TouchableOpacity key={i} style={styles.songListBox} onPress={()=>{
                             MusicTools.play(v.id,{
                                 title:v.name,
-                                time:v.time,
                                 artwork:v.al.picUrl,
-                                artist:"歌手",
+                                artist:v.ar.map((value:any)=>value.name).join("|"),
+                                songInfo:route.params,
                             })
                         }}>
                             <View style={styles.songListBoxLeft}>
@@ -198,8 +200,8 @@ export default ({navigation,route}:NavigationDes) => {
                             </TouchableOpacity>
                         </TouchableOpacity>
                     ))}
+                    <View style={{height:65}} />
                 </View>
-
             </ScrollView>
 
         </View>

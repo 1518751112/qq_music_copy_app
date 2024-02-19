@@ -11,6 +11,7 @@ import {effect} from "utils/dva16";
 import {EGet, NavName, NHome} from "common/constant";
 import {numAddLabel} from "utils/util";
 import {NavigationDes} from "common/interface";
+import Player from "componests/player";
 
 const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/gxb/%E8%92%99%E7%89%88%E7%BB%84%2028.png",
@@ -142,6 +143,7 @@ export default ({navigation}: NavigationDes) => {
     return (
         <View style={styles.home}>
             <StatusBarDiy barStyle='dark-content' navigation={navigation}/>
+            <Player navigation={navigation} />
 
             <Flex wrap="nowrap" align="center" justify='between' style={styles.header}>
                 <Ionicons name='mic' size={20} color={'#9d9d9d'}/>
@@ -218,7 +220,7 @@ export default ({navigation}: NavigationDes) => {
                             </View>
                         )
                     }} />
-                <WhiteSpace size="lg" />
+                <View style={{height:70}} />
 
             </ScrollView>
 

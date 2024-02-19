@@ -5,6 +5,7 @@ import {ESongInfo, NMusic, RSetState} from "common/constant";
 export class MusicTools{
     private static readonly idMap:Map<string,MusicInfo> = new Map();
     private static _currentInfo:MusicInfo;
+    public static isEnded:boolean=false;
     public static get currentInfo(){
         return this._currentInfo;
     }
@@ -12,14 +13,17 @@ export class MusicTools{
         this._currentInfo = value;
         reducer(NMusic,RSetState,{currentInfo:value});
     }
-    static async play(id:string,config:{title:string,artwork:string,artist:string,time:number}){
-        const {title,artwork,artist,time} = config;
+    static async play(id:string,config:MusicPlayInfo){
         //是否为当前歌曲
         if(this.currentInfo&&this.currentInfo.id==id){
             const {state} = await TrackPlayer.getPlaybackState();
             if(state=='playing'){
                 await TrackPlayer.pause();
             }else {
+                if(this.isEnded){
+                    this.isEnded = false;
+                    await TrackPlayer.seekTo(0);
+                }
                 await TrackPlayer.play();
             }
             return;
@@ -31,11 +35,8 @@ export class MusicTools{
             if(result.code==200&&result.data.length>0){
                 info = {
                     id:id,
-                    title,
                     url:result.data[0].url,
-                    artwork,
-                    artist,
-                    time
+                    ...config
                 }
                 this.idMap.set(id,info);
 
@@ -52,19 +53,23 @@ export class MusicTools{
             }
             this.currentInfo = info;
             await TrackPlayer.play();
-
         }
 
     }
 }
 
-export interface MusicInfo {
-    id:string;
+
+
+export interface MusicPlayInfo {
     title:string;
-    url:string;
     artwork:string;
     artist:string;
-    time:number;
+    songInfo:any;
+}
+
+export interface MusicInfo extends MusicPlayInfo {
+    id:string;
+    url:string;
 }
 
 export async function initEvent(){
@@ -73,20 +78,14 @@ export async function initEvent(){
         console.log('歌曲暂停');
 
         TrackPlayer.pause();
-
     });
 
     TrackPlayer.addEventListener(Event.RemotePlay, () => {
 
-        console.log('Event.RemotePlay');
-
         TrackPlayer.play();
-
     });
 
     TrackPlayer.addEventListener(Event.RemoteNext, async () => {
-
-        console.log('下一首');
 
         await TrackPlayer.skipToNext();
         //获取当前播放的歌曲
@@ -103,8 +102,6 @@ export async function initEvent(){
 
     TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
 
-        console.log('上一首');
-
         await TrackPlayer.skipToPrevious();
 
         //获取当前播放的歌曲
@@ -115,6 +112,23 @@ export async function initEvent(){
                 // @ts-ignore
                 MusicTools.currentInfo = currentTrack;
             }
+        }
+    });
+
+    TrackPlayer.addEventListener(Event.RemoteSeek, async (data) => {
+
+        await TrackPlayer.seekTo(data.position);
+    });
+
+    TrackPlayer.addEventListener(Event.PlaybackState, async (data) => {
+
+        if(data.state=='playing'){
+            reducer(NMusic,RSetState,{state:true});
+        }else {
+            reducer(NMusic,RSetState,{state:false});
+        }
+        if(data.state=='ended'){
+            MusicTools.isEnded = true;
         }
     });
 }

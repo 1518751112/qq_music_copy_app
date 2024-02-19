@@ -77,6 +77,7 @@ const App = () => {
         Capability.SkipToNext,
         Capability.SkipToPrevious,
         Capability.Stop,
+        Capability.SeekTo,
       ],
       compactCapabilities: [Capability.Play, Capability.Pause],
     });
