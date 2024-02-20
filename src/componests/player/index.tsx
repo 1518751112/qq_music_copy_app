@@ -4,11 +4,12 @@ import styles from "./styles";
 import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {useStore} from "utils/dva16";
-import {NavName, NMusic} from "common/constant";
+import {NMusic} from "common/constant";
 import {CircularProgress} from 'react-native-circular-progress';
 import {useProgress} from "react-native-track-player";
 import {MusicTools} from "utils/musicTools";
 import {Navigation} from "common/interface";
+import DragFloating from "componests/dragFloating";
 import CompositeAnimation = Animated.CompositeAnimation;
 
 const defaultImage = require('assets/home/defaultImage.jpg')
@@ -22,6 +23,7 @@ function Player(props:{
     const {style,navigation} = props;
     const {currentInfo,state,high} = useStore(NMusic);
     const [comm,setComm] = useState<CompositeAnimation|null>(null);
+    const [visible,setVisible] = useState<boolean>(false);
     const progress = useProgress();
     useEffect(()=>{
 
@@ -96,10 +98,13 @@ function Player(props:{
 
               <Fontisto name='play-list' size={18} color={'#565656'} style={{marginLeft:20}} onPress={()=>{
                   if(currentInfo&&currentInfo.songInfo){
-                      navigation.navigate(NavName.SongSheet, currentInfo.songInfo)
+                      setVisible(true)
                   }
               }}/>
           </View>
+          <DragFloating visible={visible} onRequestClose={()=>setVisible(false)} height={500}>
+                <View style={styles.strip}></View>
+          </DragFloating>
       </View>
   );
 }

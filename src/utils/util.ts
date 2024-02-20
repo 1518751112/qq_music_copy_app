@@ -1,4 +1,5 @@
 import {NativeModules, Platform, StatusBar} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 let screenWidth = 0,screenHeight = 0;
 export const setStatusBarHeight = () => {
@@ -50,3 +51,35 @@ export const setScreenSize = (width:number,height:number)=>{
   screenWidth = width;
   screenHeight = height;
 }
+
+/*----------------- 本地缓存相关 --------------*/
+export const getData = async (key: string) => {
+  const value = await AsyncStorage.getItem(key);
+  if (value !== null) {
+    // console.log("===>getData: ", key, value);
+    return value;
+  }
+  return null;
+};
+export const setData = async (key: string, value: string|object) => {
+  // console.log("===>setData: ", key, value);
+  let data;
+  try {
+    data = typeof value === 'string'?value:JSON.stringify(value,null);
+  }catch (e) {
+    console.error(e);
+    return
+  }
+  try {
+    await AsyncStorage.setItem(key, data);
+  } catch (e) {
+    console.error(e);
+  }
+};
+export const removeData = async (key: string) => {
+  try {
+    await AsyncStorage.removeItem(key);
+  } catch (e) {
+    console.error(e);
+  }
+};

@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     songList:{
         width:'100%',
         // height:Dimensions.get('window').height-95,
-        paddingTop:10,
+        // paddingTop:10,
         paddingLeft:17,
         paddingRight:17,
         backgroundColor:'rgb(255,255,255)',

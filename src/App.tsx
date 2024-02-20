@@ -13,6 +13,7 @@ import NetInfo from '@react-native-community/netinfo';
 import {config} from "configs";
 import {setScreenSize} from "utils/util";
 import TrackPlayer, {AppKilledPlaybackBehavior, Capability} from 'react-native-track-player';
+import {MusicTools} from "utils/musicTools";
 
 export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
@@ -81,6 +82,7 @@ const App = () => {
       ],
       compactCapabilities: [Capability.Play, Capability.Pause],
     });
+    await MusicTools.init();
   }
 
   const updateDimensions = () => {

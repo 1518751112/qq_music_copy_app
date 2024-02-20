@@ -23,7 +23,7 @@ const fee:any = {
     "4":"专辑",
     "8":"试听",
 }
-let page = new Pagination(50)
+let page = new Pagination(99999)
 export default ({navigation,route}:NavigationDes) => {
     const [songSheetInfo,setSongSheetInfo]:any = useState(null);
     const [chState,setChState]:any = useState(false);
@@ -31,8 +31,8 @@ export default ({navigation,route}:NavigationDes) => {
     const bottomBoxTop = useRef(null);
     const topRef = useRef(null);
     const [topHeight,setTopHeight] = useState(0);
-    const {currentInfo} = useStore(NMusic)
-    // route.params={"diyLogo": null, "id": "6928971595", "image": "http://p1.music.126.net/aJWizLNjT-NuZ3hzqyAqbw==/109951168185878263.jpg", "labelTexts": ["榜单", "KTV", "摇滚"], "onPress": null, "playCount": 3509028, "title": "车载DJ：核爆神曲 瞬间上头"}
+    const {currentInfo,state} = useStore(NMusic)
+    route.params={"diyLogo": null, "id": "8438502788", "image": "http://p1.music.126.net/CKlGkBooXFEbxC6erWhEig==/109951168638864124.jpg", "labelTexts": ["华语", "流行", "网络歌曲"], "onPress": null, "playCount": 2146097, "title": "168首超好听爆火热歌精选"}
 
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default ({navigation,route}:NavigationDes) => {
         console.log("navigation",route.params)
         return ()=>{
             onSetOpacity = null;
-            page = new Pagination(50);
+            page = new Pagination(99999);
         }
     }, []);
 
@@ -86,6 +86,9 @@ export default ({navigation,route}:NavigationDes) => {
     }
     //分页
     const handlePage = async (index:number,data?:any)=>{
+        if(page.loading){
+            return
+        }
         page.loading=true;
         const outData = data||songSheetInfo
         if(!page.totalPages){
@@ -101,12 +104,17 @@ export default ({navigation,route}:NavigationDes) => {
         //获取数据
         const result = await effect(NMusic,ESongDetail,{ids});
         if(result.code==200){
-            setDataList(dataList.concat(result.songs))
+            setDataList(dataList.concat(result.songs.map((v:any)=>({
+                id:v.id,
+                title:v.name,
+                artwork:v.al.picUrl,
+                artist:v.ar.map((value:any)=>value.name).join("|"),
+                fee:v.fee
+            }))))
         }
         page.loading=false;
 
     }
-
 
     return (
         <View style={styles.home}>
@@ -179,25 +187,24 @@ export default ({navigation,route}:NavigationDes) => {
                     {dataList.map((v:any,i:number)=>(
                         <TouchableOpacity key={i} style={styles.songListBox} onPress={()=>{
                             MusicTools.play(v.id,{
-                                title:v.name,
-                                artwork:v.al.picUrl,
-                                artist:v.ar.map((value:any)=>value.name).join("|"),
+                                ...v,
                                 songInfo:route.params,
+                                list:dataList,
                             })
                         }}>
                             <View style={styles.songListBoxLeft}>
                                 <Text style={styles.songListBoxLeftNum}>{i+1}</Text>
                                 <View>
-                                    <Text style={[styles.songListBoxLeftText,currentInfo&&currentInfo.id==v.id?styles.songListBoxLeftTextSelect:null]}>{v.name}</Text>
+                                    <Text style={[styles.songListBoxLeftText,currentInfo&&currentInfo.id==v.id?styles.songListBoxLeftTextSelect:null]}>{v.title}</Text>
                                     <View style={{flexDirection:'row'}}>
                                         <Text style={styles.songListBoxLeftNum}>{fee[v.fee]}</Text>
-                                        <Text style={styles.songListBoxLeftNum}> {v.ar.map((value:any)=>value.name).join("/")}</Text>
+                                        <Text style={styles.songListBoxLeftNum}> {v.artist}</Text>
                                     </View>
                                 </View>
                             </View>
-                            <TouchableOpacity style={styles.songListBoxRight}>
-                                <AntDesign size={20} name={'play'} color={'black'} />
-                            </TouchableOpacity>
+                            <View style={styles.songListBoxRight}>
+                                <AntDesign size={20} name={currentInfo&&currentInfo.id==v.id&&state?'pause':'play'} color={'black'} />
+                            </View>
                         </TouchableOpacity>
                     ))}
                     <View style={{height:65}} />

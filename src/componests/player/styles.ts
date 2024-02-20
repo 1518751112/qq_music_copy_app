@@ -27,6 +27,14 @@ const styles = StyleSheet.create({
         width:37,
         height:37,
         borderRadius:25
+    },
+    strip:{
+        width: 35,
+        height: 5,
+        backgroundColor: 'lightgrey',
+        borderRadius: 5,
+        alignSelf: 'center',
+        marginTop: 10,
     }
 })
 
