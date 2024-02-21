@@ -60,7 +60,7 @@ export default ({navigation,route}:NavigationDes) => {
             }
             setSongSheetInfo(data)
             await handlePage(1,data)
-            console.log("====",result?.playlist?.creator)
+            // console.log("====",result?.playlist?.creator)
         }
 
     }

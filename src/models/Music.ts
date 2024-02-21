@@ -7,7 +7,7 @@ export default {
     currentInfo:null,
     time:0,
     state:false,
-    high:0
+    history:[]
   },
   reducers: {
     [RSetState](state: any, { payload }: any) {

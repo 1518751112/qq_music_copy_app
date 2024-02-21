@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
     txt:{
       fontSize:16,
       color:'#000000',
-        marginLeft:15
+        marginLeft:15,
+        maxWidth:'69%'
     },
     row:{
         flexDirection:'row',
@@ -57,6 +58,10 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between',
     },
+    toolLeftTxt:{
+        color:'#6b6b6b',
+        fontSize:14
+    },
     toolLeft:{
         paddingHorizontal:10,
         paddingVertical:8,
@@ -81,21 +86,33 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center'
     },
-    songListBoxLeftNum:{
+    songListFee:{
+        color:'#ff0043',
+        fontSize:10,
+        borderColor:'#ff0043',
+        paddingVertical:1,
+        paddingHorizontal:4,
+        borderStyle:'solid',
+        borderWidth:1,
+        borderRadius:3
+    },
+    songListArtist:{
         color:'#727272',
         fontSize:16,
+        maxWidth:120
     },
     songListBoxLeftText:{
         marginLeft:10,
         color:'black',
         fontSize:16,
+        maxWidth:220
     },
     songListBoxRight:{
         flexDirection:'row',
         alignItems:'center'
     },
     songListBoxLeftTextSelect:{
-        color:'#ff0000'
+        color:'#ff0043'
     },
     scrollView:{
         width:'100%',

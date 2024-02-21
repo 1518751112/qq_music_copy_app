@@ -14,7 +14,9 @@ export class MusicTools{
     }
     public static set currentInfo(value:MusicInfo){
         this._currentInfo = value;
-        reducer(NMusic,RSetState,{currentInfo:value});
+        const history = Object.keys(this.idObj).map(key=>this.idObj[key])
+        history.sort((a,b)=>(b.logTime||0)-(a.logTime||0))
+        reducer(NMusic,RSetState,{currentInfo:value,history});
         //本地缓存
         setData("MusicTools",{
             currentInfo:value,
@@ -23,6 +25,7 @@ export class MusicTools{
         });
 
     }
+
     static async play(id:string,config:MusicPlayInfo){
         if(this.isProcessing){
             return;
@@ -42,13 +45,16 @@ export class MusicTools{
             return;
         }
         if(config.list){
+            config.list = config.list.concat()
             //获取当前歌
             const index = config.list.findIndex(v=>v.id==id);
-            const current = config.list.splice(index,1);
+            const current = index==-1?[]:config.list.splice(index,1);
             //打乱歌单
             config.list = _.shuffle(config.list);
             //插入当前歌曲
-            config.list.unshift(current[0]);
+            if(index!=-1){
+                config.list.unshift(current[0]);
+            }
             this.list = config.list;
         }else{
             config.list = this.list
@@ -74,7 +80,7 @@ export class MusicTools{
 
         if(info){
 
-            // console.log("播放",info)
+            console.log("播放",info)
             const result = await TrackPlayer.add(info) as number;
             // console.log("播放结果",result)
             if(result!=0){
@@ -104,7 +110,8 @@ export class MusicTools{
                     title:next.title,
                     artwork:next.artwork,
                     artist:next.artist,
-                    songInfo:this.currentInfo.songInfo
+                    fee:next.fee,
+                    songInfo:this.currentInfo.songInfo,
                 });
             }
         }
@@ -120,8 +127,20 @@ export class MusicTools{
             this._currentInfo = currentInfo;
             this.idObj = idObj;
             this.list = list;
-            reducer(NMusic,RSetState,{currentInfo:currentInfo});
+            const history = Object.keys(this.idObj).map(key=>this.idObj[key])
+            history.sort((a,b)=>(b.logTime||0)-(a.logTime||0))
+            reducer(NMusic,RSetState,{currentInfo:currentInfo,history});
             await TrackPlayer.add(currentInfo)
+        }
+    }
+
+    static removeHistory(id:string|number){
+        const info = this.idObj[id];
+        if(info){
+            delete this.idObj[id];
+            const history = Object.keys(this.idObj).map(key=>this.idObj[key])
+            history.sort((a,b)=>(b.logTime||0)-(a.logTime||0))
+            reducer(NMusic,RSetState,{history});
         }
     }
 }
@@ -132,6 +151,7 @@ export interface MusicPlayInfo {
     title:string;
     artwork:string;
     artist:string;
+    fee:number;
     songInfo?:any;
     list?:any[]|null;
 }

@@ -1,15 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Easing, Image, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
+import {Animated, Easing, Image, StyleProp, Text, View, ViewStyle} from "react-native";
 import styles from "./styles";
-import FontAwesome6 from "react-native-vector-icons/FontAwesome6";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {useStore} from "utils/dva16";
 import {NMusic} from "common/constant";
-import {CircularProgress} from 'react-native-circular-progress';
-import {useProgress} from "react-native-track-player";
-import {MusicTools} from "utils/musicTools";
 import {Navigation} from "common/interface";
 import CurrentList from "componests/player/currentList";
+import Schedule from "componests/player/schedule";
 import CompositeAnimation = Animated.CompositeAnimation;
 
 const defaultImage = require('assets/home/defaultImage.jpg')
@@ -24,10 +21,6 @@ function Player(props:{
     const {currentInfo,state,high} = useStore(NMusic);
     const [comm,setComm] = useState<CompositeAnimation|null>(null);
     const [visible,setVisible] = useState<boolean>(false);
-    const progress = useProgress();
-    useEffect(()=>{
-
-    },[])
 
     useEffect(() => {
         if (state) {
@@ -72,32 +65,13 @@ function Player(props:{
               <Animated.View style={{...styles.image,transform: [{ rotate: spin }]}}>
                   <Image source={currentInfo?{uri:currentInfo.artwork}:defaultImage} style={styles.image}/>
               </Animated.View>
-              <Text style={styles.txt}>{currentInfo?currentInfo.title+"-"+currentInfo.artist:'歌曲名'}</Text>
+              <Text style={styles.txt} numberOfLines={1} ellipsizeMode="tail">{currentInfo?currentInfo.title+"-"+currentInfo.artist:'歌曲名'}</Text>
           </View>
           <View style={styles.row}>
-              <TouchableOpacity onPress={()=>{
-                  if(currentInfo){
-                      MusicTools.play(currentInfo.id,currentInfo)
-                  }
-              }}>
-                  <CircularProgress
-                      size={28}
-                      width={2}
-                      fill={progress?(progress.position/progress.duration)*100:100}
-                      tintColor={'#565656'}
-                      backgroundColor={'#d3d3d3'}
-                      rotation={0}
-                      lineCap="round"
-                  >
-                      {() => (
-                          // 这里放置圆形进度条中心的内容，比如播放按钮等
-                          <FontAwesome6 name={state?'pause':'play'} size={12} color={'#565656'}/>
-                      )}
-                  </CircularProgress>
-              </TouchableOpacity>
+              <Schedule/>
 
               <Fontisto name='play-list' size={18} color={'#565656'} style={{marginLeft:20}} onPress={()=>{
-                  if(currentInfo&&currentInfo.songInfo){
+                  if(currentInfo){
                       setVisible(true)
                   }
               }}/>
