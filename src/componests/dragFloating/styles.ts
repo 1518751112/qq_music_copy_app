@@ -25,9 +25,7 @@ const styles = StyleSheet.create({
     },
     box: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-        backgroundColor: "rgba(0,0,0,0.44)",
-        zIndex: -10,
+        height: Dimensions.get('screen').height,
     }
 });
 

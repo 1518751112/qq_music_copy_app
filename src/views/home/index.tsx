@@ -142,7 +142,7 @@ export default ({navigation}: NavigationDes) => {
 
     return (
         <View style={styles.home}>
-            <StatusBarDiy barStyle='dark-content' navigation={navigation}/>
+            <StatusBarDiy barStyle='dark-content' navigation={navigation} animated={true}/>
             <Player navigation={navigation} />
 
             <Flex wrap="nowrap" align="center" justify='between' style={styles.header}>

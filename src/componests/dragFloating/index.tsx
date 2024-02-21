@@ -1,6 +1,15 @@
 import React, {ReactElement, useEffect, useRef, useState} from 'react';
 import styles from "./styles";
-import {Animated, Dimensions, Modal, PanResponder, StyleProp, TouchableOpacity, ViewStyle} from 'react-native';
+import {
+    Animated,
+    ColorValue,
+    Dimensions,
+    Modal,
+    PanResponder,
+    StyleProp,
+    TouchableOpacity,
+    ViewStyle
+} from 'react-native';
 import {setStatusBarHeight} from "utils/util";
 
 const DragFloating = (props:{
@@ -10,18 +19,21 @@ const DragFloating = (props:{
     visible:boolean,
     height?:number,
     goInTime?:number,
+    maskingColor?:ColorValue,
 }) => {
-    const {onRequestClose,visible,height,goInTime} = props
+    const {onRequestClose,visible,height,goInTime,maskingColor} = props
     const [heightMax] = useState(Dimensions.get('window').height+setStatusBarHeight());
     const [animated2,setAnimated] = useState(height||0);
     const animated = useRef(height||0);
     const position = useRef(new Animated.ValueXY({ x: 0, y: heightMax })).current;
+    const outData = useRef({time:0}).current;
     const panResponder = useRef(
         PanResponder.create({
             onStartShouldSetPanResponder: () => true,
             onMoveShouldSetPanResponder: () => true,
             onPanResponderGrant: () => {
                 // 开始手势操作，初始化值
+                outData.time = Date.now();
                 /*position.setOffset({
                     // @ts-ignore
                     x: position.x._value,
@@ -53,8 +65,15 @@ const DragFloating = (props:{
                 // 在释放手势后自动弹回
                 // 滑动距离小于最高度的2/5时，自动弹回,大于2/5时，关闭
                 const num = heightMax - animated.current
+                //获取滑动距离
                 // @ts-ignore
-                if (position.y._value-num < animated.current /  3.5) {
+                const distance = position.y._value-num
+                //快速下滑关闭
+                if ( Date.now()-outData.time<300&&distance > animated.current /  10) {
+                    out()
+                    return
+                }
+                if (distance < animated.current /  3.5) {
                     Animated.timing(position, {
                         // @ts-ignore
                         toValue: { x: 0, y: num },
@@ -63,8 +82,8 @@ const DragFloating = (props:{
                     }).start();
                 }else{
                     out()
-
                 }
+
 
             },
         })
@@ -102,7 +121,7 @@ const DragFloating = (props:{
             statusBarTranslucent
             hardwareAccelerated
         >
-            <TouchableOpacity activeOpacity={1} style={styles.box} onPress={out}>
+            <TouchableOpacity activeOpacity={1} style={[styles.box,{backgroundColor:maskingColor||"rgba(0,0,0,0.44)"}]} onPress={out}>
                 <Animated.View
                     {...panResponder.panHandlers}
                     style={[{...styles.bottomSheet,height:animated2||null}, position.getLayout(),props?.style||null]}

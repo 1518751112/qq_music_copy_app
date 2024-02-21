@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Easing, Image, StyleProp, Text, View, ViewStyle} from "react-native";
+import {Animated, Easing, Image, StyleProp, Text, TouchableOpacity, View, ViewStyle} from "react-native";
 import styles from "./styles";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import {useStore} from "utils/dva16";
@@ -7,6 +7,7 @@ import {NMusic} from "common/constant";
 import {Navigation} from "common/interface";
 import CurrentList from "componests/player/currentList";
 import Schedule from "componests/player/schedule";
+import Lyric from "componests/lyric";
 import CompositeAnimation = Animated.CompositeAnimation;
 
 const defaultImage = require('assets/home/defaultImage.jpg')
@@ -18,10 +19,10 @@ function Player(props:{
 }) {
     const rotation = useRef(new Animated.Value(0)).current;
     const {style,navigation} = props;
-    const {currentInfo,state,high} = useStore(NMusic);
+    const {currentInfo,state} = useStore(NMusic);
     const [comm,setComm] = useState<CompositeAnimation|null>(null);
     const [visible,setVisible] = useState<boolean>(false);
-
+    const [visible2,setVisible2] = useState<boolean>(false);
     useEffect(() => {
         if (state) {
             startRotation();
@@ -55,11 +56,12 @@ function Player(props:{
         outputRange: ['0deg', '360deg'],
     });
     return (
-      <View style={{
+      <TouchableOpacity style={{
           ...styles.home,
           // @ts-ignore
-          ...(style||{}),
-          high
+          ...(style||{})
+      }} activeOpacity={1} onPress={()=>{
+          setVisible2(true)
       }}>
           <View style={styles.row}>
               <Animated.View style={{...styles.image,transform: [{ rotate: spin }]}}>
@@ -77,7 +79,8 @@ function Player(props:{
               }}/>
           </View>
           <CurrentList visible={visible} setVisible={setVisible}/>
-      </View>
+          <Lyric navigation={navigation} visible={visible2} setVisible={setVisible2}/>
+      </TouchableOpacity>
   );
 }
 export default Player

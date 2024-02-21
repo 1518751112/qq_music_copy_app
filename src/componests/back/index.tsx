@@ -19,7 +19,7 @@ function Back(props:{
     const ref = useRef(null)
     const [opacity,setOpacity] = useState(0)
     useEffect(()=>{
-        StatusBarDiy.setBarStyle("light-content")
+        StatusBarDiy.setBarStyle("light-content",true)
         config&&config((num)=>{
             setOpacity(num)
         })
