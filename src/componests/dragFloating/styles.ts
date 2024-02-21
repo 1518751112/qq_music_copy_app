@@ -1,4 +1,4 @@
-import {StyleSheet} from "react-native";
+import {Dimensions, StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -14,14 +14,21 @@ const styles = StyleSheet.create({
         width: '100%',
         elevation: 4, // Android 阴影效果
         shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
+        shadowOffset: {width: 0, height: -3},
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        zIndex:10,
+        zIndex: -5,
+        overflow: 'hidden'
     },
     dragging: {
         backgroundColor: 'lightgrey',
     },
+    box: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        backgroundColor: "rgba(0,0,0,0.44)",
+        zIndex: -10,
+    }
 });
 
 export default styles

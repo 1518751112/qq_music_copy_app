@@ -28,8 +28,10 @@ export class MusicTools{
             return;
         }
         this.isProcessing = true;
+        let info:MusicInfo|undefined = this.idObj[id];
+        const isGet = !info||(info.logTime&&Date.now()-info.logTime>1000*60*5)
         //是否为当前歌曲
-        if(this.currentInfo&&this.currentInfo.id==id){
+        if(this.currentInfo&&this.currentInfo.id==id&&!isGet){
             const {state} = await TrackPlayer.getPlaybackState();
             if(state=='playing'){
                 await TrackPlayer.pause();
@@ -40,12 +42,20 @@ export class MusicTools{
             return;
         }
         if(config.list){
+            //获取当前歌
+            const index = config.list.findIndex(v=>v.id==id);
+            const current = config.list.splice(index,1);
+            //打乱歌单
             config.list = _.shuffle(config.list);
+            //插入当前歌曲
+            config.list.unshift(current[0]);
             this.list = config.list;
+        }else{
+            config.list = this.list
         }
 
-        let info:MusicInfo|undefined = this.idObj[id];
-        if(!info||(info.logTime&&Date.now()-info.logTime>1000*60*5)){
+
+        if(isGet){
             const result =  await effect(NMusic,ESongInfo,{ids:[id]});
             if(result.code==200&&result.data.length>0){
                 info = {
@@ -94,8 +104,7 @@ export class MusicTools{
                     title:next.title,
                     artwork:next.artwork,
                     artist:next.artist,
-                    songInfo:this.currentInfo.songInfo,
-                    list:this.list
+                    songInfo:this.currentInfo.songInfo
                 });
             }
         }

@@ -5,12 +5,13 @@ import {setStatusBarHeight} from "utils/util";
 
 const DragFloating = (props:{
     style?:StyleProp<ViewStyle>
-    children?: ReactElement<any, any>;
+    children?: ReactElement<any, any>[]|ReactElement<any, any>;
     onRequestClose?:()=>void;
     visible:boolean,
     height?:number,
+    goInTime?:number,
 }) => {
-    const {onRequestClose,visible,height} = props
+    const {onRequestClose,visible,height,goInTime} = props
     const [heightMax] = useState(Dimensions.get('window').height+setStatusBarHeight());
     const [animated2,setAnimated] = useState(height||0);
     const animated = useRef(height||0);
@@ -76,7 +77,7 @@ const DragFloating = (props:{
                 // @ts-ignore
                 toValue: { x: 0, y: heightMax-animated2 },
                 useNativeDriver:false,
-                duration: 300, // 动画持续时间
+                duration: goInTime||300, // 动画持续时间
             }).start();
         }
     },[visible,animated2])
@@ -99,20 +100,21 @@ const DragFloating = (props:{
             transparent={true}
             onRequestClose={out}
             statusBarTranslucent
+            hardwareAccelerated
         >
-            <TouchableOpacity activeOpacity={1} style={{width:"100%",height:"100%",backgroundColor:"rgba(0,0,0,0.44)",zIndex:0}} onPress={out}>
+            <TouchableOpacity activeOpacity={1} style={styles.box} onPress={out}>
                 <Animated.View
                     {...panResponder.panHandlers}
-                    style={[{...styles.bottomSheet,height:animated2}, position.getLayout(),props?.style||null]}
-                >
-                    {props.children&&React.cloneElement(props.children, {
-                        onLayout: (e:any) => {
-                            if(!animated.current){
-                                animated.current=e.nativeEvent.layout.height
-                                setAnimated(e.nativeEvent.layout.height)
-                            }
+                    style={[{...styles.bottomSheet,height:animated2||null}, position.getLayout(),props?.style||null]}
+                    onLayout={(e:any) => {
+                        if(!animated.current){
+                            animated.current=e.nativeEvent.layout.height
+                            setAnimated(e.nativeEvent.layout.height)
+                            // console.log('animated.current',animated.current)
                         }
-                    })}
+                    }}
+                >
+                    {props.children}
                 </Animated.View>
             </TouchableOpacity>
         </Modal>

@@ -19,3 +19,10 @@ export const EGet = 'EGet'
 export const ESongSheet = 'ESongSheet'
 export const ESongDetail = 'ESongDetail'
 export const ESongInfo = 'ESongInfo'
+
+export const fee:any = {
+  "0":"免费",
+  "1":"VIP",
+  "4":"专辑",
+  "8":"试听",
+}

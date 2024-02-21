@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
         marginLeft:10,
         color:'black',
         fontSize:16,
+        maxWidth:300
     },
     songListBoxRight:{
         flexDirection:'row',

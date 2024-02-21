@@ -9,7 +9,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Octicons from "react-native-vector-icons/Octicons";
 import {getImgColor, numAddLabel} from "utils/util";
-import {ESongDetail, ESongSheet, NHome, NMusic} from "common/constant";
+import {ESongDetail, ESongSheet, fee, NHome, NMusic} from "common/constant";
 import {effect, useStore} from "utils/dva16";
 import {MusicTools} from "utils/musicTools";
 import Player from "componests/player";
@@ -17,22 +17,16 @@ import Player from "componests/player";
 const defaultImage = require('assets/home/defaultImage.jpg')
 
 let onSetOpacity:((num:number)=>void)|null = null;
-const fee:any = {
-    "0":"免费",
-    "1":"VIP",
-    "4":"专辑",
-    "8":"试听",
-}
-let page = new Pagination(99999)
 export default ({navigation,route}:NavigationDes) => {
     const [songSheetInfo,setSongSheetInfo]:any = useState(null);
-    const [chState,setChState]:any = useState(false);
+    // const [chState,setChState]:any = useState(false);
     const [dataList,setDataList]:any = useState([]);
     const bottomBoxTop = useRef(null);
     const topRef = useRef(null);
+    const page = useRef(new Pagination(50)).current;
     const [topHeight,setTopHeight] = useState(0);
     const {currentInfo,state} = useStore(NMusic)
-    route.params={"diyLogo": null, "id": "8438502788", "image": "http://p1.music.126.net/CKlGkBooXFEbxC6erWhEig==/109951168638864124.jpg", "labelTexts": ["华语", "流行", "网络歌曲"], "onPress": null, "playCount": 2146097, "title": "168首超好听爆火热歌精选"}
+    // route.params={"diyLogo": null, "id": "8438502788", "image": "http://p1.music.126.net/CKlGkBooXFEbxC6erWhEig==/109951168638864124.jpg", "labelTexts": ["华语", "流行", "网络歌曲"], "onPress": null, "playCount": 2146097, "title": "168首超好听爆火热歌精选"}
 
 
     useEffect(() => {
@@ -42,7 +36,6 @@ export default ({navigation,route}:NavigationDes) => {
         console.log("navigation",route.params)
         return ()=>{
             onSetOpacity = null;
-            page = new Pagination(99999);
         }
     }, []);
 
@@ -77,12 +70,12 @@ export default ({navigation,route}:NavigationDes) => {
         const is = y+80>=topHeight
         //获取到顶部的百分比
         const num = (y)/(topHeight-80)
-        if(event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-y<1){
+        if(event.nativeEvent.contentSize.height-event.nativeEvent.layoutMeasurement.height-y<130){
             handlePage(page.page+1)
 
         }
         onSetOpacity&&onSetOpacity(num)
-        setChState(is)
+        // setChState(is)
     }
     //分页
     const handlePage = async (index:number,data?:any)=>{
@@ -195,7 +188,7 @@ export default ({navigation,route}:NavigationDes) => {
                             <View style={styles.songListBoxLeft}>
                                 <Text style={styles.songListBoxLeftNum}>{i+1}</Text>
                                 <View>
-                                    <Text style={[styles.songListBoxLeftText,currentInfo&&currentInfo.id==v.id?styles.songListBoxLeftTextSelect:null]}>{v.title}</Text>
+                                    <Text style={[styles.songListBoxLeftText,currentInfo&&currentInfo.id==v.id?styles.songListBoxLeftTextSelect:null]} numberOfLines={1} ellipsizeMode="tail">{v.title}</Text>
                                     <View style={{flexDirection:'row'}}>
                                         <Text style={styles.songListBoxLeftNum}>{fee[v.fee]}</Text>
                                         <Text style={styles.songListBoxLeftNum}> {v.artist}</Text>

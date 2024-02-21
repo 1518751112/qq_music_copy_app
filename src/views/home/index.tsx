@@ -192,6 +192,7 @@ export default ({navigation}: NavigationDes) => {
                     data={banners}
                     sliderWidth={400}
                     itemWidth={330}
+                    onSnapToItem={(index) => console.log(index)}
                     renderItem={ ({item, index}) => {
                         return (
                             <View style={styles.ranking} key={index}>

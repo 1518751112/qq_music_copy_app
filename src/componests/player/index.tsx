@@ -9,7 +9,7 @@ import {CircularProgress} from 'react-native-circular-progress';
 import {useProgress} from "react-native-track-player";
 import {MusicTools} from "utils/musicTools";
 import {Navigation} from "common/interface";
-import DragFloating from "componests/dragFloating";
+import CurrentList from "componests/player/currentList";
 import CompositeAnimation = Animated.CompositeAnimation;
 
 const defaultImage = require('assets/home/defaultImage.jpg')
@@ -102,9 +102,7 @@ function Player(props:{
                   }
               }}/>
           </View>
-          <DragFloating visible={visible} onRequestClose={()=>setVisible(false)} height={500}>
-                <View style={styles.strip}></View>
-          </DragFloating>
+          <CurrentList visible={visible} setVisible={setVisible}/>
       </View>
   );
 }
