@@ -13,6 +13,7 @@ import {ESongDetail, ESongSheet, fee, NHome, NMusic} from "common/constant";
 import {effect, useStore} from "utils/dva16";
 import {MusicTools} from "utils/musicTools";
 import Player from "componests/player";
+import {ActivityIndicator} from "@ant-design/react-native";
 
 const defaultImage = require('assets/home/defaultImage.jpg')
 
@@ -20,7 +21,7 @@ let onSetOpacity:((num:number)=>void)|null = null;
 export default ({navigation,route}:NavigationDes) => {
     const [songSheetInfo,setSongSheetInfo]:any = useState(null);
     // const [chState,setChState]:any = useState(false);
-    const [dataList,setDataList]:any = useState([]);
+    const [dataList,setDataList]:any = useState<any[]>([]);
     const bottomBoxTop = useRef(null);
     const topRef = useRef(null);
     const page = useRef(new Pagination(50)).current;
@@ -177,6 +178,7 @@ export default ({navigation,route}:NavigationDes) => {
                     </View>
                 </View>
                 <View style={styles.songList} >
+                    <ActivityIndicator animating={!dataList.length} size="small" color="#0000ff" />
                     {dataList.map((v:any,i:number)=>(
                         <TouchableOpacity key={i} style={styles.songListBox} onPress={()=>{
                             MusicTools.play(v.id,{

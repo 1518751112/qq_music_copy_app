@@ -39,6 +39,8 @@
     "react-native-config": "^1.5.1",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "^2.13.2",
+    "react-native-lyric": "^1.0.2",
+    "react-native-root-siblings": "^5.0.1",
     "react-native-safe-area-context": "^4.7.2",
     "react-native-screens": "^3.25.0",
     "react-native-snap-carousel-new": "^3.9.2",

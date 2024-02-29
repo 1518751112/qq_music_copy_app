@@ -4,6 +4,7 @@ export const NavName= {
   Mine: 'Mine',
   Tab: 'Tab',
   SongSheet: 'SongSheet',
+  Lyric: 'Lyric',
 }
 
 //out
@@ -19,6 +20,7 @@ export const EGet = 'EGet'
 export const ESongSheet = 'ESongSheet'
 export const ESongDetail = 'ESongDetail'
 export const ESongInfo = 'ESongInfo'
+export const EGetLrc = 'EGetLrc'
 
 export const fee:any = {
   "0":"免费",

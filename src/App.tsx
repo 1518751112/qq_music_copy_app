@@ -14,6 +14,7 @@ import {config} from "configs";
 import {setScreenSize} from "utils/util";
 import TrackPlayer, {AppKilledPlaybackBehavior, Capability} from 'react-native-track-player';
 import {MusicTools} from "utils/musicTools";
+import {RootSiblingParent} from 'react-native-root-siblings';
 
 export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
@@ -94,27 +95,29 @@ const App = () => {
   };
 
   return (
-    <Provider>
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator initialRouteName={"测试"} screenOptions={{
-          headerStyle: {
-            backgroundColor: "#162b5d",
-          },
-          headerTintColor: '#000',
-          headerTitleStyle: {
-            color:'#000',
-            fontSize:18,
-          },
-          headerTitleAlign: 'center', // 将标题居中
-          animation: 'slide_from_right', // 通过animation属性设置动画效果
-        }}>
-          <Stack.Screen name={NavName.Tab} component={TabBar} options={{ headerShown: false }} />
-          <Stack.Screen name={NavName.Login} component={LoginScreen} options={{ headerShown: false }} />
-          <Stack.Screen name={NavName.SongSheet} component={SongSheet} options={{ headerShown: false }} />
+      <RootSiblingParent>
+        <Provider>
+              <NavigationContainer ref={navigationRef}>
+                <Stack.Navigator initialRouteName={"测试"} screenOptions={{
+                  headerStyle: {
+                    backgroundColor: "#162b5d",
+                  },
+                  headerTintColor: '#000',
+                  headerTitleStyle: {
+                    color:'#000',
+                    fontSize:18,
+                  },
+                  headerTitleAlign: 'center', // 将标题居中
+                  animation: 'slide_from_right', // 通过animation属性设置动画效果
+                }}>
+                  <Stack.Screen name={NavName.Tab} component={TabBar} options={{ headerShown: false }} />
+                  <Stack.Screen name={NavName.Login} component={LoginScreen} options={{ headerShown: false }} />
+                  <Stack.Screen name={NavName.SongSheet} component={SongSheet} options={{ headerShown: false }} />
 
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+                </Stack.Navigator>
+              </NavigationContainer>
+        </Provider>
+      </RootSiblingParent>
   );
 };
 export default App;

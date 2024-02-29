@@ -9,6 +9,7 @@ import DragFloating from "componests/dragFloating";
 import {Tabs} from "@ant-design/react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Feather from "react-native-vector-icons/Feather";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
 //当前音乐列表
@@ -33,11 +34,11 @@ function CurrentList(props: {
                 prerenderingSiblingsNumber={0}
             >
                 {[1, 1].map((v, index: number) => (
-                    <TouchableOpacity activeOpacity={1} style={styles.menuContent} key={index}>
+                    <View style={styles.menuContent} key={index}>
                         <View style={styles.tool}>
                             {index == 0 ? <Text style={styles.toolLeftTxt}>全部歌曲{history.length || 0}首</Text> :
                                 <TouchableOpacity style={styles.toolLeft}>
-                                    <Fontisto name='cloud-down' size={16} color='black'/>
+                                    <FontAwesome name='random' size={16} color='black'/>
                                     <Text style={{color: '#000000'}}> 循环模式</Text>
                                 </TouchableOpacity>}
                             <View style={styles.toolRight}>
@@ -83,7 +84,7 @@ function CurrentList(props: {
                                       </TouchableOpacity>)}>
                         </FlatList>
                         <View style={{height: 65}}/>
-                    </TouchableOpacity>))}
+                    </View>))}
             </Tabs>
         </DragFloating>
     );

@@ -79,7 +79,7 @@ function Player(props:{
               }}/>
           </View>
           <CurrentList visible={visible} setVisible={setVisible}/>
-          <Lyric navigation={navigation} visible={visible2} setVisible={setVisible2}/>
+          <Lyric visible={visible2} setVisible={setVisible2}/>
       </TouchableOpacity>
   );
 }

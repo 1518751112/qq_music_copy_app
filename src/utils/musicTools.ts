@@ -1,6 +1,6 @@
 import TrackPlayer, {Event} from 'react-native-track-player';
 import {effect, reducer} from "utils/dva16";
-import {ESongInfo, NMusic, RSetState} from "common/constant";
+import {EGetLrc, ESongInfo, NMusic, RSetState} from "common/constant";
 import {getData, setData} from "utils/util";
 import _ from "lodash";
 
@@ -32,7 +32,7 @@ export class MusicTools{
         }
         this.isProcessing = true;
         let info:MusicInfo|undefined = this.idObj[id];
-        const isGet = !info||(info.logTime&&Date.now()-info.logTime>1000*60*5)
+        const isGet = !info||(info.logTime&&Date.now()-info.logTime>1000*60*5),isGetLrc = !info;
         //是否为当前歌曲
         if(this.currentInfo&&this.currentInfo.id==id&&!isGet){
             const {state} = await TrackPlayer.getPlaybackState();
@@ -68,28 +68,64 @@ export class MusicTools{
                     ...config,
                     id:id,
                     url:result.data[0].url,
-                    logTime:Date.now()
+                    logTime:Date.now(),
+                }
+                if(isGetLrc){
+                    const lrcInfo = await effect(NMusic,EGetLrc,{id:id});
+                    info.lrc = lrcInfo?.lrc.lyric||null
                 }
                 this.idObj[id]={
                     ...info,
                     list:null
                 };
 
+
             }
         }
 
         if(info){
 
-            console.log("播放",info)
-            const result = await TrackPlayer.add(info) as number;
-            // console.log("播放结果",result)
-            if(result!=0){
-                await TrackPlayer.skip(result);
+            // console.log("播放",info)
+            if(this.currentInfo&&this.currentInfo.id==id){
+                const index = await TrackPlayer.getActiveTrackIndex() as number;
+                await TrackPlayer.updateMetadataForTrack(index,info)
+            }else{
+                const result = await TrackPlayer.add(info) as number;
+                // console.log("播放结果",result)
+                if(result!=0){
+                    await TrackPlayer.skip(result);
+                }
             }
+
             this.currentInfo = info;
             await TrackPlayer.play();
         }
         this.isProcessing = false;
+
+    }
+
+    /**
+     * 播放器里面播放下一首歌曲
+     */
+    static async skipToNext(){
+        const currentIndex = await TrackPlayer.getActiveTrackIndex();
+
+        await TrackPlayer.skipToNext();
+        //获取当前播放的歌曲
+        const index = await TrackPlayer.getActiveTrackIndex();
+        if(currentIndex==index){
+            console.log("已经是最后一首歌曲了")
+            //选取歌单从里面选取下一首歌曲
+            await this.next(index)
+        }else{
+            if(typeof index == "number"){
+                const currentTrack = await TrackPlayer.getTrack(index);
+                if(currentTrack){
+                    // @ts-ignore
+                    MusicTools.currentInfo = currentTrack
+                }
+            }
+        }
 
     }
 
@@ -117,6 +153,20 @@ export class MusicTools{
         }
     }
 
+    static async skipToPrevious(){
+        await TrackPlayer.skipToPrevious();
+
+        //获取当前播放的歌曲
+        const index = await TrackPlayer.getActiveTrackIndex();
+        if(typeof index == "number"){
+            const currentTrack = await TrackPlayer.getTrack(index);
+            if(currentTrack){
+                // @ts-ignore
+                this.currentInfo = currentTrack;
+            }
+        }
+    }
+
     /**
      * 初始化播放信息
      */
@@ -130,7 +180,10 @@ export class MusicTools{
             const history = Object.keys(this.idObj).map(key=>this.idObj[key])
             history.sort((a,b)=>(b.logTime||0)-(a.logTime||0))
             reducer(NMusic,RSetState,{currentInfo:currentInfo,history});
-            await TrackPlayer.add(currentInfo)
+            const index = await TrackPlayer.getActiveTrackIndex();
+            if(index==undefined){
+                await TrackPlayer.add(currentInfo)
+            }
         }
     }
 
@@ -143,6 +196,11 @@ export class MusicTools{
             reducer(NMusic,RSetState,{history});
         }
     }
+
+    static async seekTo(position:number){
+        return  TrackPlayer.seekTo(position);
+
+    }
 }
 
 
@@ -154,6 +212,7 @@ export interface MusicPlayInfo {
     fee:number;
     songInfo?:any;
     list?:any[]|null;
+    lrc?:string
 }
 export type MusicInfoObj={
     [key:string]:MusicInfo
@@ -180,39 +239,13 @@ export async function initEvent(){
 
     TrackPlayer.addEventListener(Event.RemoteNext, async () => {
         console.log("下一首")
-        const currentIndex = await TrackPlayer.getActiveTrackIndex();
-
-        await TrackPlayer.skipToNext();
-        //获取当前播放的歌曲
-        const index = await TrackPlayer.getActiveTrackIndex();
-        if(currentIndex==index){
-            console.log("已经是最后一首歌曲了")
-            await MusicTools.next(currentIndex);
-        }else{
-            if(typeof index == "number"){
-                const currentTrack = await TrackPlayer.getTrack(index);
-                if(currentTrack){
-                    // @ts-ignore
-                    MusicTools.currentInfo = currentTrack
-                }
-            }
-        }
+        await MusicTools.skipToNext()
 
 
     });
 
     TrackPlayer.addEventListener(Event.RemotePrevious, async () => {
-        await TrackPlayer.skipToPrevious();
-
-        //获取当前播放的歌曲
-        const index = await TrackPlayer.getActiveTrackIndex();
-        if(typeof index == "number"){
-            const currentTrack = await TrackPlayer.getTrack(index);
-            if(currentTrack){
-                // @ts-ignore
-                MusicTools.currentInfo = currentTrack;
-            }
-        }
+        await MusicTools.skipToPrevious()
     });
 
     TrackPlayer.addEventListener(Event.RemoteSeek, async (data) => {

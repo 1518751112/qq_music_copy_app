@@ -94,7 +94,7 @@ android {
              * x86_64: 64位的平板
              * x86: 平板、模拟器用得比较多
              */
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi-v7a", "x86","arm64-v8a"
         }
     }
     signingConfigs {

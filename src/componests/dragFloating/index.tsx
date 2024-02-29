@@ -2,35 +2,64 @@ import React, {ReactElement, useEffect, useRef, useState} from 'react';
 import styles from "./styles";
 import {
     Animated,
+    BackHandler,
     ColorValue,
     Dimensions,
-    Modal,
     PanResponder,
+    PanResponderInstance,
     StyleProp,
     TouchableOpacity,
+    View,
     ViewStyle
 } from 'react-native';
 import {setStatusBarHeight} from "utils/util";
+import {RootSiblingPortal} from "react-native-root-siblings";
 
 const DragFloating = (props:{
     style?:StyleProp<ViewStyle>
     children?: ReactElement<any, any>[]|ReactElement<any, any>;
     onRequestClose?:()=>void;
     visible:boolean,
+    dragEnabled?:boolean,
     height?:number,
     goInTime?:number,
     maskingColor?:ColorValue,
 }) => {
-    const {onRequestClose,visible,height,goInTime,maskingColor} = props
+    const {onRequestClose,visible,height,goInTime,maskingColor="rgba(0,0,0,0.44)",dragEnabled=true} = props
     const [heightMax] = useState(Dimensions.get('window').height+setStatusBarHeight());
     const [animated2,setAnimated] = useState(height||0);
     const animated = useRef(height||0);
     const position = useRef(new Animated.ValueXY({ x: 0, y: heightMax })).current;
-    const outData = useRef({time:0}).current;
-    const panResponder = useRef(
-        PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
-            onMoveShouldSetPanResponder: () => true,
+    const outData = useRef({time:0,visible}).current;
+    const [panResponder,setPanResponder] = useState<PanResponderInstance>();
+
+    useEffect(()=>{
+        if(visible&&animated2){
+            // 初始化值
+            Animated.timing(position, {
+                // @ts-ignore
+                toValue: { x: 0, y: heightMax-animated2 },
+                useNativeDriver:false,
+                duration: goInTime||300, // 动画持续时间
+            }).start();
+        }
+        outData.visible = visible
+    },[visible,animated2])
+
+    //监听返回键
+    useEffect(()=>{
+
+        BackHandler.addEventListener('hardwareBackPress',onBackPress)
+        return ()=>{
+            BackHandler.removeEventListener('hardwareBackPress',onBackPress)
+        }
+    },[])
+
+    useEffect(() => {
+        setPanResponder(PanResponder.create({
+            onStartShouldSetPanResponder: () => dragEnabled,
+            onMoveShouldSetPanResponder: () => dragEnabled,
+            onPanResponderTerminationRequest: () => false, // 不允许终止事件
             onPanResponderGrant: () => {
                 // 开始手势操作，初始化值
                 outData.time = Date.now();
@@ -86,20 +115,17 @@ const DragFloating = (props:{
 
 
             },
-        })
-    ).current;
+        }))
+    }, [dragEnabled]);
 
-    useEffect(()=>{
-        if(visible&&animated2){
-            // 初始化值
-            Animated.timing(position, {
-                // @ts-ignore
-                toValue: { x: 0, y: heightMax-animated2 },
-                useNativeDriver:false,
-                duration: goInTime||300, // 动画持续时间
-            }).start();
+    const onBackPress = () => {
+        if(outData.visible){
+            out()
+            return true
         }
-    },[visible,animated2])
+        return false
+
+    }
 
     const out = ()=>{
         Animated.timing(position, {
@@ -112,18 +138,14 @@ const DragFloating = (props:{
         });
     }
     return (
-        <Modal
-            visible={visible}
-            animationType='fade'
-            style={{flex:1}}
-            transparent={true}
-            onRequestClose={out}
-            statusBarTranslucent
-            hardwareAccelerated
+        <RootSiblingPortal
+
         >
-            <TouchableOpacity activeOpacity={1} style={[styles.box,{backgroundColor:maskingColor||"rgba(0,0,0,0.44)"}]} onPress={out}>
+            <View style={[styles.box,{backgroundColor:maskingColor,display:visible?undefined:"none"}]}>
+                <TouchableOpacity activeOpacity={1} style={styles.box} onPress={out}>
+                </TouchableOpacity>
                 <Animated.View
-                    {...panResponder.panHandlers}
+                    {...panResponder?.panHandlers}
                     style={[{...styles.bottomSheet,height:animated2||null}, position.getLayout(),props?.style||null]}
                     onLayout={(e:any) => {
                         if(!animated.current){
@@ -135,8 +157,10 @@ const DragFloating = (props:{
                 >
                     {props.children}
                 </Animated.View>
-            </TouchableOpacity>
-        </Modal>
+            </View>
+
+
+        </RootSiblingPortal>
 
     );
 };

@@ -12,7 +12,6 @@ function StatusBarDiy(props:{
     useEffect(()=>{
         StatusBar.setBarStyle(props.barStyle||'default',props.animated||false)
         const unsubscribe = props.navigation?props.navigation.addListener('focus', () => {
-            console.log(999999)
             StatusBar.setBarStyle(props.barStyle||'default',props.animated||false)
         }):null;
         return ()=>{

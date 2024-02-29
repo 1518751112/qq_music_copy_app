@@ -17,8 +17,8 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: -3},
         shadowOpacity: 0.1,
         shadowRadius: 4,
-        zIndex: -5,
-        overflow: 'hidden'
+        zIndex: -1,
+        overflow: 'hidden',
     },
     dragging: {
         backgroundColor: 'lightgrey',
@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     box: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('screen').height,
+        position:'absolute',
+        top:0,
+        zIndex: -2,
     }
 });
 

@@ -1,4 +1,4 @@
-import {ESongDetail, ESongInfo, NMusic, RSetState} from "common/constant";
+import {EGetLrc, ESongDetail, ESongInfo, NMusic, RSetState} from "common/constant";
 import {requestGet} from 'utils/dva16'
 
 export default {
@@ -24,6 +24,10 @@ export default {
     },
     async [ESongInfo](payload: {ids:string[]}, { call, reducer, select, effect }: any) {
       const res = await requestGet('song/url', {id:payload.ids.join(',')})
+      return res
+    },
+    async [EGetLrc](payload: {id:string}, { call, reducer, select, effect }: any) {
+      const res = await requestGet('lyric', {id:payload.id})
       return res
     },
   },

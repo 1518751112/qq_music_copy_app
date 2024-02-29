@@ -41,6 +41,17 @@ export const getImg = (imgUrl:string,size:string|number)=>{
   return imgUrl
 }
 
+//数字转时间 HH:mm:ss, num 单位秒
+export const numToTime = (num:number)=>{
+  const hour = Math.floor(num/3600);
+  const minute = Math.floor((num-hour*3600)/60);
+  const second = Math.floor(num-hour*3600-minute*60);
+  if(hour==0){
+    return `${String(minute).padStart(2,'0')}:${String(second).padStart(2,'0')}`
+  }
+  return `${hour}:${minute}:${second}`
+}
+
 //获取屏幕宽高
 export const getScreenSize = ()=>{
   return {screenWidth,screenHeight}
