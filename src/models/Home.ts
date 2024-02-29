@@ -4,7 +4,11 @@ import {requestGet} from 'utils/dva16'
 export default {
   namespace: NHome,
   state: {
-    name:"测试昵称"
+    name:"测试昵称",
+    playerHeight:0,
+    playerIsShow:true,
+    currentListIsShow:false,
+    lyricIsShow:false,
   },
   reducers: {
     [RSetState](state: any, { payload }: any) {

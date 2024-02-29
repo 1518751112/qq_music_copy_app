@@ -7,11 +7,11 @@ import Ionicons from "react-native-vector-icons/Feather";
 import IonicFont5 from "react-native-vector-icons/FontAwesome5";
 import KingKong, {KingKongData} from "componests/kingKong";
 import CarouselNew from "react-native-snap-carousel-new";
-import {effect} from "utils/dva16";
-import {EGet, NavName, NHome} from "common/constant";
+import {effect, reducer} from "utils/dva16";
+import {EGet, NavName, NHome, RSetState} from "common/constant";
 import {numAddLabel} from "utils/util";
 import {NavigationDes} from "common/interface";
-import Player from "componests/player";
+import {TabHeight} from "utils/theme";
 
 const banners = [
     "https://xf-1322333971.cos.ap-shanghai.myqcloud.com/sf/upload/gxb/%E8%92%99%E7%89%88%E7%BB%84%2028.png",
@@ -50,6 +50,16 @@ export default ({navigation}: NavigationDes) => {
     useEffect(() => {
         //获取首页信息
         setTimeout(init,1000)
+        const unsubscribe = navigation.addListener('focus', () => {
+            reducer(NHome,RSetState,{playerIsShow:true,playerHeight:TabHeight})
+        });
+        const blur = navigation.addListener('blur', () => {
+            reducer(NHome,RSetState,{playerIsShow:true,playerHeight:TabHeight})
+        });
+        return ()=>{
+            unsubscribe();
+            blur();
+        }
     }, []);
 
     const init = async ()=>{
@@ -143,7 +153,6 @@ export default ({navigation}: NavigationDes) => {
     return (
         <View style={styles.home}>
             <StatusBarDiy barStyle='dark-content' navigation={navigation} animated={true}/>
-            <Player navigation={navigation} />
 
             <Flex wrap="nowrap" align="center" justify='between' style={styles.header}>
                 <Ionicons name='mic' size={20} color={'#9d9d9d'}/>

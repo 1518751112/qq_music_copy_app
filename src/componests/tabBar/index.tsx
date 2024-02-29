@@ -4,6 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from "views/home";
 import Mine from "views/mine";
 import {NavName} from "common/constant";
+import {TabHeight} from "utils/theme";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ function HomeStack() {
           tabBarActiveTintColor: "#00b286",
           tabBarInactiveTintColor: 'gray',
           tabBarStyle:{
-            height:60,
+            height:TabHeight,
             paddingTop: 5,
             paddingBottom: 10,
           }

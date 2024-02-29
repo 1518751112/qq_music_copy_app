@@ -15,6 +15,7 @@ import {setScreenSize} from "utils/util";
 import TrackPlayer, {AppKilledPlaybackBehavior, Capability} from 'react-native-track-player';
 import {MusicTools} from "utils/musicTools";
 import {RootSiblingParent} from 'react-native-root-siblings';
+import FloatingWindow from "componests/floatingWindow";
 
 export const navigationRef = createNavigationContainerRef()
 const Stack = createNativeStackNavigator()
@@ -113,8 +114,8 @@ const App = () => {
                   <Stack.Screen name={NavName.Tab} component={TabBar} options={{ headerShown: false }} />
                   <Stack.Screen name={NavName.Login} component={LoginScreen} options={{ headerShown: false }} />
                   <Stack.Screen name={NavName.SongSheet} component={SongSheet} options={{ headerShown: false }} />
-
                 </Stack.Navigator>
+                <FloatingWindow/>
               </NavigationContainer>
         </Provider>
       </RootSiblingParent>

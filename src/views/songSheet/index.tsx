@@ -9,10 +9,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Octicons from "react-native-vector-icons/Octicons";
 import {getImgColor, numAddLabel} from "utils/util";
-import {ESongDetail, ESongSheet, fee, NHome, NMusic} from "common/constant";
-import {effect, useStore} from "utils/dva16";
+import {ESongDetail, ESongSheet, fee, NHome, NMusic, RSetState} from "common/constant";
+import {effect, reducer, useStore} from "utils/dva16";
 import {MusicTools} from "utils/musicTools";
-import Player from "componests/player";
 import {ActivityIndicator} from "@ant-design/react-native";
 
 const defaultImage = require('assets/home/defaultImage.jpg')
@@ -35,6 +34,9 @@ export default ({navigation,route}:NavigationDes) => {
             getSongSheetInfo(route.params?.id)
         },1000)
         console.log("navigation",route.params)
+        setTimeout(()=>{
+            reducer(NHome,RSetState,{playerIsShow:true,playerHeight:0})
+        },100)
         return ()=>{
             onSetOpacity = null;
         }
@@ -115,7 +117,7 @@ export default ({navigation,route}:NavigationDes) => {
             <Back navigation={navigation} breakImage={route.params?.image} config={(setOpacity)=>{
                 onSetOpacity = setOpacity
             }} />
-            <Player navigation={navigation} />
+            {/*<Player navigation={navigation} />*/}
             <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled={true} onScroll={handleScroll} stickyHeaderIndices={[2]}
                         scrollEventThrottle={10} style={{paddingBottom:50}}>
                 <View style={styles.topBox} ref={topRef}>

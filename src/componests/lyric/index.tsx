@@ -5,8 +5,8 @@ import StatusBarDiy from "componests/statusBarDiy";
 import DragFloating from "componests/dragFloating";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import {useStore} from "utils/dva16";
-import {NMusic} from "common/constant";
+import {reducer, useStore} from "utils/dva16";
+import {NHome, NMusic, RSetState} from "common/constant";
 import Feather from "react-native-vector-icons/Feather";
 import {Lyric as LyricTo} from 'react-native-lyric';
 import {useProgress} from "react-native-track-player";
@@ -100,7 +100,9 @@ function Lyric(props:{
                         }}>
                         <FontAwesome5 selectionColor={"red"} name='step-forward' size={18} color={'#888888'}/>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{
+                        reducer(NHome,RSetState,{currentListIsShow:true})
+                    }}>
                         <Fontisto name='play-list' size={20} color={'#888888'} style={{marginLeft:20}}/>
                     </TouchableOpacity>
                     </View>

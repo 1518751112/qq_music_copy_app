@@ -1,5 +1,4 @@
-import {Dimensions, Image, Platform, StatusBar} from 'react-native'
-import React from 'react'
+import {Dimensions, Platform, StatusBar} from 'react-native'
 
 export const ThemeColor = {
     main: "#601D86", // 主题主颜色
@@ -28,14 +27,6 @@ export const WhiteHeaderStyle = {
       // headerBackTitleVisible: false,
       headerBackTitle: "返回",
       headerBackTitleStyle: { color: "#515151" },
-      headerBackImage: ()=><Image source={require('../../../react-native-scaffold/ReactNativeLewinScaffold/src/assets/icons/back-black.png')} style={[{  ...Platform.select({
-        android: {
-          marginLeft: -5
-        },
-        ios: {
-          marginLeft: 10
-        }
-      }) }, { width: 20, height: 20 }]} resizeMode={"contain"}/>,
 }
 
 export const ThemeHeaderStyle = {
@@ -53,14 +44,6 @@ export const ThemeHeaderStyle = {
       },
       headerBackTitleStyle: { color: "white" },
       headerBackTitle: "返回",
-      headerBackImage: ()=><Image source={require('../../../react-native-scaffold/ReactNativeLewinScaffold/src/assets/icons/back-white.png')} style={[{  ...Platform.select({
-        android: {
-          marginLeft: -5
-        },
-        ios: {
-          marginLeft: 10
-        }
-      }) }, { width: 20, height: 20 }]} resizeMode={"contain"}/>,
 }
 
 export const BlackHeaderStyle = {
@@ -83,14 +66,6 @@ export const BlackHeaderStyle = {
     headerBackTitle: "返回",
     headerBackTitleStyle: { color: "white" },
     // headerBackTitleVisible: false,
-    headerBackImage: ()=><Image source={require('../../../react-native-scaffold/ReactNativeLewinScaffold/src/assets/icons/back-white.png')} style={[{  ...Platform.select({
-      android: {
-        marginLeft: -5
-      },
-      ios: {
-        marginLeft: 10
-      }
-    }) }, { width: 20, height: 20 }]} resizeMode={"contain"}/>,
 }
 
 export const ViewBorderBottomLine = {
@@ -105,3 +80,5 @@ export const setStatusWhite = ()=> {
 export const setStatusDark = ()=> {
   StatusBar.setBarStyle("dark-content")
 }
+
+export const TabHeight = 60
