@@ -3,14 +3,16 @@ import {Dimensions, StyleSheet} from "react-native";
 const styles = StyleSheet.create({
     home: {
         borderRadius: 1,
+        position:"relative"
     },
     box: {
         width: "100%",
         height: Dimensions.get('screen').height,
-        backgroundColor: '#000000',
         paddingTop: 35,
         paddingBottom: 35,
         overflow:'hidden',
+        position:"relative",
+        backgroundColor: 'rgba(0,0,0,0.82)',
     },
     background:{
         flex: 1,
@@ -18,7 +20,7 @@ const styles = StyleSheet.create({
         top:0,
         width:'100%',
         height:'100%',
-        opacity:0.5
+        resizeMode: 'cover',
     },
     back: {
         paddingHorizontal: 20,

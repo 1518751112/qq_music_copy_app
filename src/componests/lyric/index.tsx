@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {Text, TouchableOpacity, View} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 import StatusBarDiy from "componests/statusBarDiy";
 import DragFloating from "componests/dragFloating";
@@ -47,8 +47,10 @@ function Lyric(props:{
         [],
     );
     return (
-        <DragFloating visible={visible} onRequestClose={()=>setVisible(false)} dragEnabled={dragEnabled}>
-            <View style={styles.box}>
+        <DragFloating visible={visible} style={styles.home} onRequestClose={()=>setVisible(false)} dragEnabled={dragEnabled}>
+            <Image source={currentInfo?.artwork?{uri:currentInfo.artwork}:require('assets/home/transparent.png')} style={styles.background} blurRadius={20}/>
+            <View style={[styles.box]}>
+
                 <View style={styles.back}>
                     <AntDesign name='down' size={22} onPress={()=>setVisible(false)} />
                     <View style={{alignItems:'center'}}>
@@ -112,7 +114,6 @@ function Lyric(props:{
                     </TouchableOpacity>
                     </View>
                 </View>
-
             </View>
         </DragFloating>
   );
