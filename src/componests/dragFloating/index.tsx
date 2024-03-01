@@ -5,6 +5,7 @@ import {
     BackHandler,
     ColorValue,
     Dimensions,
+    Modal,
     PanResponder,
     PanResponderInstance,
     StyleProp,
@@ -13,7 +14,6 @@ import {
     ViewStyle
 } from 'react-native';
 import {setStatusBarHeight} from "utils/util";
-import {RootSiblingPortal} from "react-native-root-siblings";
 
 const DragFloating = (props:{
     style?:StyleProp<ViewStyle>
@@ -138,10 +138,16 @@ const DragFloating = (props:{
         });
     }
     return (
-        <RootSiblingPortal
-
+        <Modal
+            visible={visible}
+            animationType='fade'
+            style={{flex:1}}
+            transparent={true}
+            onRequestClose={out}
+            statusBarTranslucent
+            hardwareAccelerated
         >
-            <View style={[styles.box,{backgroundColor:maskingColor,display:visible?undefined:"none"}]}>
+            <View style={[styles.box,{backgroundColor:maskingColor,display:visible?undefined:"none",zIndex: -10}]}>
                 <TouchableOpacity activeOpacity={1} style={styles.box} onPress={out}>
                 </TouchableOpacity>
                 <Animated.View
@@ -160,7 +166,7 @@ const DragFloating = (props:{
             </View>
 
 
-        </RootSiblingPortal>
+        </Modal>
 
     );
 };

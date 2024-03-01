@@ -16,7 +16,7 @@ const FloatingWindow = (props:{
     return (
         <RootSiblingPortal>
             <View>
-                <Player style={{bottom:playerHeight,display:playerIsShow?undefined:"none"}} />
+                <Player style={{bottom:playerHeight,display:playerIsShow?undefined:"none",backgroundColor:'rgba(255,255,255,0.93)'}} />
                 <Lyric visible={lyricIsShow} setVisible={(value)=>{
                     reducer(NHome,RSetState,{lyricIsShow:value})
                 }}/>

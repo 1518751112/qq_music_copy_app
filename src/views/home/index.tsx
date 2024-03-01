@@ -46,6 +46,7 @@ const oldSongList = [
 const recommendSize = 110
 export default ({navigation}: NavigationDes) => {
     const [songList,setSongList] = useState(oldSongList)
+    const [bannerList,setBanners] = useState([])
 
     useEffect(() => {
         //获取首页信息
@@ -91,6 +92,9 @@ export default ({navigation}: NavigationDes) => {
                     </View>)
                 }
             })
+            const bannerInfo = blocks.find((v:any)=>v.blockCode==='HOMEPAGE_BANNER')
+            setBanners(bannerInfo?.extInfo?.banners.map((v:any)=>v.pic)||[])
+
             setSongList(songList)
             // console.log("songList",songList)
         }
@@ -142,7 +146,8 @@ export default ({navigation}: NavigationDes) => {
                 borderRadius: size/2,
                 alignItems: 'center',
                 justifyContent:'center',
-                backgroundColor:'#FF2721'
+                backgroundColor:'#FF2721',
+                marginBottom:5
             }}>
                 <Ionicons name={v.icoName} size={20} color={'#ffffff'}/>
             </View>
@@ -179,7 +184,7 @@ export default ({navigation}: NavigationDes) => {
                         autoplay
                         infinite
                     >
-                        {banners.map((v: string, index: number) => (
+                        {(bannerList.length?bannerList:banners).map((v: string, index: number) => (
                             <Image source={{uri: v}} style={styles.wrapperImage} key={index}/>))}
                     </Carousel>
                 </View>

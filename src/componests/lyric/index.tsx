@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Text, TouchableOpacity, View} from "react-native";
 import styles from "./styles";
 import StatusBarDiy from "componests/statusBarDiy";
@@ -26,11 +26,17 @@ function Lyric(props:{
     const [dragEnabled,setDragEnabled] = useState(false);
     const {currentInfo,state} = useStore(NMusic);
     const progress = useProgress();
+    const outData = useRef({duration:0}).current;
     useEffect(()=>{
         if(visible){
             StatusBarDiy.setBarStyle("light-content",true)
         }
     },[visible])
+    useEffect(()=>{
+        if(progress&&progress.duration!=outData.duration){
+            outData.duration = progress.duration;
+        }
+    },[progress.duration])
     const lineRenderer = useCallback(
         ({ lrcLine: { millisecond, content }, index, active }:any) => (
                 <Text
@@ -41,7 +47,7 @@ function Lyric(props:{
         [],
     );
     return (
-        <DragFloating visible={visible} style={styles.home} onRequestClose={()=>setVisible(false)} dragEnabled={dragEnabled}>
+        <DragFloating visible={visible} onRequestClose={()=>setVisible(false)} dragEnabled={dragEnabled}>
             <View style={styles.box}>
                 <View style={styles.back}>
                     <AntDesign name='down' size={22} onPress={()=>setVisible(false)} />
@@ -74,9 +80,8 @@ function Lyric(props:{
                     <View style={styles.schedule}>
                         <Text style={styles.scheduleText}>{numToTime(progress?.position||0)}</Text>
                         <Progress style={{width:'80%'}} height={2} dragToEnlarge={1.5} schedule={progress.position?(progress.position/progress.duration)*100:0} onCheng={v=>{
-                            console.log("progress",progress)
-                            if(progress.duration) {
-                                MusicTools.seekTo(progress.duration*v/100)
+                            if(outData.duration) {
+                                MusicTools.seekTo(outData.duration*v/100)
                             }
                         }}/>
                         <Text style={styles.scheduleText}>{numToTime(progress.duration||0)}</Text>

@@ -20,6 +20,7 @@ export const EGet = 'EGet'
 export const ESongSheet = 'ESongSheet'
 export const ESongDetail = 'ESongDetail'
 export const ESongInfo = 'ESongInfo'
+export const EGetBanner = 'EGetBanner'
 export const EGetLrc = 'EGetLrc'
 
 export const fee:any = {
