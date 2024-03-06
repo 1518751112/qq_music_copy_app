@@ -5,7 +5,6 @@ import {
     BackHandler,
     ColorValue,
     Dimensions,
-    Modal,
     PanResponder,
     PanResponderInstance,
     StyleProp,
@@ -14,6 +13,7 @@ import {
     ViewStyle
 } from 'react-native';
 import {setStatusBarHeight} from "utils/util";
+import {RootSiblingPortal} from "react-native-root-siblings";
 
 const DragFloating = (props:{
     style?:StyleProp<ViewStyle>
@@ -60,7 +60,8 @@ const DragFloating = (props:{
             onStartShouldSetPanResponder: () => dragEnabled,
             onMoveShouldSetPanResponder: () => dragEnabled,
             onPanResponderTerminationRequest: () => false, // 不允许终止事件
-            onPanResponderGrant: () => {
+            onPanResponderGrant: (event, gestureState) => {
+
                 // 开始手势操作，初始化值
                 outData.time = Date.now();
                 /*position.setOffset({
@@ -138,14 +139,14 @@ const DragFloating = (props:{
         });
     }
     return (
-        <Modal
-            visible={visible}
+        <RootSiblingPortal
+            /*visible={visible}
             animationType='fade'
             style={{flex:1}}
             transparent={true}
             onRequestClose={out}
             statusBarTranslucent
-            hardwareAccelerated
+            hardwareAccelerated*/
         >
             <View style={[styles.box,{backgroundColor:maskingColor,display:visible?undefined:"none",zIndex: -10}]}>
                 <TouchableOpacity activeOpacity={1} style={styles.box} onPress={out}>
@@ -160,13 +161,14 @@ const DragFloating = (props:{
                             // console.log('animated.current',animated.current)
                         }
                     }}
+                    pointerEvents="box-none"
                 >
                     {props.children}
                 </Animated.View>
             </View>
 
 
-        </Modal>
+        </RootSiblingPortal>
 
     );
 };

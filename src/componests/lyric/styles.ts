@@ -3,7 +3,6 @@ import {Dimensions, StyleSheet} from "react-native";
 const styles = StyleSheet.create({
     home: {
         borderRadius: 1,
-        position:"relative"
     },
     box: {
         width: "100%",

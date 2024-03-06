@@ -23,7 +23,7 @@ export default ({navigation,route}:NavigationDes) => {
     const [dataList,setDataList]:any = useState<any[]>([]);
     const bottomBoxTop = useRef(null);
     const topRef = useRef(null);
-    const page = useRef(new Pagination(50)).current;
+    const page = useRef(new Pagination(30)).current;
     const [topHeight,setTopHeight] = useState(0);
     const {currentInfo,state} = useStore(NMusic)
     // route.params={"diyLogo": null, "id": "8438502788", "image": "http://p1.music.126.net/CKlGkBooXFEbxC6erWhEig==/109951168638864124.jpg", "labelTexts": ["华语", "流行", "网络歌曲"], "onPress": null, "playCount": 2146097, "title": "168首超好听爆火热歌精选"}
